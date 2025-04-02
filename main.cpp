@@ -1,4 +1,9 @@
 ////2 Stage - Production Routing Problem (PRP)////
+// - A single product.
+// - A single production plant.
+// - "n" number of customers.
+// - "t" number of time periods.
+// - "m" number of vehicles.
 
 
 #pragma warning(disable : 4996) //For Visual Studio 2012
@@ -20,6 +25,8 @@
 
 using namespace std;
 
+typedef IloArray<IloNumArray> TwoDMatrix;
+
 ILOSTLBEGIN
 
 int main(int argc, char** argv)
@@ -27,28 +34,68 @@ int main(int argc, char** argv)
 	IloEnv env;
 	try
 	{
-		////////DECISION VARIABLES AND PARAMETERS FOR SUBPROBLEM///////////////
+		//////////Part 1 - DEFINE VARIABLES AND PARAMETERS//////////
+		
+		/////CONSTANTS/////
+		int N = 5;  // Number of customers + Plant (# of Plant = 1).
+		int T = 3;  // Number of time periods.
+		int M = 1;  // Number of vehicles available.
+
+		int C = 100;  // Production capacity of the plant in a time period.
+		int Q = 50;  // Vehicle capacity (all vehicles are identical).
+		double u = 10;  // Unit cost of production.
+		double f = 5;  // Setup cost for production.
+
+		
+		/////PARAMETERS/////
+		TwoDMatrix demand(env);  // Demand at a customer node in a time period.
+		TwoDMatrix tranport_cost(env);  // Transportation cost between two nodes.
+		IloNumArray holding_cost(env);  // Inventory holding cost at each node.
+		IloNumArray penalty(env);  // Penalt at node i, if demand is unmet in a period.
+
+		IloNumArray init_Inventory(env);  // Initial inventory at each node.
+		IloNumArray invemtory_cap(env);  // Inventory capacity at each node (node 0 is the plant).
+
+
+
+
+
+
+		/////BASIC DECISION VARIABLES/////
+		IloNumVarArray Y(env, T, 0, IloInfinity, ILOBOOL);  // 1 if production takesplace in time period T, ow = 0.
+
+
+
+
+
+
+
+
 		IloNumVarArray X_dual(env, 2, 0, IloInfinity, ILOFLOAT);
 		IloNumArray Y_val(env, 3);
 		IloNum theta_val;
 
 
-		////////DECISION VARIABLES AND PARAMETERS FOR EXTREM RAY PROBLEM///////////////
+		/////DECISION VARIABLES AND PARAMETERS FOR EXTREM RAY PROBLEM/////
 		IloNumVarArray X_dual_er(env, 2, 0, IloInfinity, ILOFLOAT);
 		//IloNumVarArray Y_val_er(env, 3, 0, 5, ILOINT);
 		//IloNum theta_val;
 
 
-		////////DECISION VARIABLES AND PARAMETERS FOR MASTER PROBLEM///////////
+		/////DECISION VARIABLES AND PARAMETERS FOR MASTER PROBLEM/////
 		IloNumVarArray Y(env, 3, 0, 5, ILOINT);
 		IloNumArray X_dual_val(env, 2);
 		IloNumArray X_dual_val_er(env, 2);
 		//IloNumVar theta_var(env, -IloInfinity, IloInfinity, ILOFLOAT);
 		IloNumVar theta_var(env, 0, IloInfinity, ILOFLOAT);
 
-		//////////DEVELOP GENERIC MODEL //////////////////////////
 
-		//////SET MASTER PROBLEM///////////////////////////
+
+
+
+		//////////Part 2 - DEVELOP GENERIC MODEL//////////
+
+		/////SET MASTER PROBLEM/////
 		IloModel model_master(env);
 		IloExpr Objective_master(env);
 		Objective_master = theta_var - 5 * Y[0] + 2 * Y[1] - 9 * Y[2];
@@ -56,9 +103,9 @@ int main(int argc, char** argv)
 		IloCplex cplex_master(env);
 		Objective_master.end();
 		cplex_master.setOut(env.getNullStream()); // This is to supress the output of Branch & Bound Tree on screen
-		cplex_master.setWarning(env.getNullStream()); //This is to supress warning messages on screen
+		cplex_master.setWarning(env.getNullStream()); // This is to supress warning messages on screen
 
-		/////////SET SUBPROBLEM (DUAL FORMULATION)//////////////////////
+		/////SET SUBPROBLEM (DUAL FORMULATION)/////
 		IloModel model_sub(env);
 		IloObjective Objective_sub = IloMaximize(env);
 		model_sub.add(Objective_sub);
@@ -75,7 +122,7 @@ int main(int argc, char** argv)
 		cplex_sub.setWarning(env.getNullStream()); //This is to supress warning messages on screen
 
 
-		/////////EXTREME RAY PROBLEM (DUAL FORMULATION)//////////////////////
+		/////EXTREME RAY PROBLEM (DUAL FORMULATION)/////
 		IloModel model_sub_er(env);
 		IloObjective Objective_sub_er = IloMaximize(env);
 		model_sub_er.add(Objective_sub_er);
@@ -92,7 +139,11 @@ int main(int argc, char** argv)
 
 
 
-		/////////BEGIN ITERATIONS/////////////////////////////////
+
+
+
+		//////////Part 3 - BEGIN ITERATIONS//////////
+
 		IloNum GAP = IloInfinity;
 		theta_val = 0;
 		Y_val[0] = 0;
