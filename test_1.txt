@@ -18,6 +18,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <vector> //for vectors
+#include <random>
 #include <math.h>
 
 #include <ilcplex/ilocplex.h>
@@ -35,7 +36,7 @@ int main(int argc, char** argv)
 	try
 	{
 		//////////Part 1 - DEFINE VARIABLES AND PARAMETERS//////////
-		
+
 		/////CONSTANTS/////
 		int N = 10;  // Number of customers + Plant (# of Plant = 1).
 		int T = 3;  // Number of time periods.
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
 		double f = 5;  // Setup cost for production.
 
 
-		
+
 		/////PARAMETERS/////
 		TwoDMatrix demand(env);  // Demand at a customer node in a time period.
 
@@ -61,12 +62,23 @@ int main(int argc, char** argv)
 
 
 		///GENERATING PARAMETER VALUES///
+		// Random generators
+		random_device rd;  // Creates a random number seed generator.
+		mt19937 gen(rd());  //  Mersenne Twister random number engine. It is fast and produces high-quality pseudorandom numbers.
+		
+		
 		//Demand
+		uniform_int_distribution<> demand_dis(10, 50);  // Uniform Demand between 10 and 50.
+
+
 
 		//Transportation Cost
+		uniform_int_distribution<> cost_dis(5, 100);    // uniform Cost between 5 and 100.
+
+
 
 		//Inventory Holding Cost
-		
+
 		//Penalty for Unmet Demand
 
 		//Initial Inventory 
@@ -97,11 +109,11 @@ int main(int argc, char** argv)
 
 
 
-		
 
 
 
 
+		/*
 		IloNumVarArray X_dual(env, 2, 0, IloInfinity, ILOFLOAT);
 		IloNumArray Y_val(env, 3);
 		IloNum theta_val;
@@ -122,10 +134,14 @@ int main(int argc, char** argv)
 
 
 
-
+		*/
 
 		//////////Part 2 - DEVELOP GENERIC MODEL//////////
 
+
+
+
+		/*
 		/////SET MASTER PROBLEM/////
 		IloModel model_master(env);
 		IloExpr Objective_master(env);
@@ -171,10 +187,14 @@ int main(int argc, char** argv)
 
 
 
-
+		*/
 
 		//////////Part 3 - BEGIN ITERATIONS//////////
 
+
+
+
+		/*
 		IloNum GAP = IloInfinity;
 		theta_val = 0;
 		Y_val[0] = 0;
@@ -294,6 +314,8 @@ int main(int argc, char** argv)
 		model_sub.end();
 		cplex_master.end();
 		cplex_sub.end();
+
+		*/
 	}//try
 	catch (IloException& e)
 	{

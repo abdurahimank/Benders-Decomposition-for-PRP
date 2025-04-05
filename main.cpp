@@ -18,6 +18,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <vector> //for vectors
+#include <random>
 #include <math.h>
 
 #include <ilcplex/ilocplex.h>
@@ -56,22 +57,155 @@ int main(int argc, char** argv)
 		IloNumArray holding_cost(env);  // Inventory holding cost at each node.
 		IloNumArray penalty(env);  // Penalty at node i, if demand is unmet in a period.
 
-		IloNumArray init_Inventory(env);  // Initial inventory at each node.
+		IloNumArray init_inventory(env);  // Initial inventory at each node.
 		IloNumArray inventory_cap(env);  // Inventory capacity at each node (node 0 is the plant).
 
 
-		///GENERATING PARAMETER VALUES///
+		///READING PARAMETER DATA///
+		const char* data_filename = "Data.dat";
+		if (argc > 1)
+		{
+			data_filename = argv[1];
+		}
+		fstream datafile;
+		datafile.open(data_filename, ios::in);
+
+		if (!datafile)
+		{
+			cerr << "ERROR: could not open file " << data_filename << " for reading" << endl;
+			cerr << "usage:   " << argv[0] << " <datafile>" << endl;
+			throw(-1);
+		}
+
+		//Importing data in the form of Matrix in the .dat file into the variables as per order.
+		datafile >> demand >> tranport_cost >> holding_cost >> penalty >> init_inventory >> inventory_cap;
+
+		
+		IloBool consistentData = (demand.getSize() == tranport_cost.getSize());  // Ensuring nodes are same in different matrices.
+		if (!consistentData)
+		{
+			cerr << "ERROR: data file '" << data_filename << "' contains inconsistent data" << endl;
+			throw(-1);
+		}
+		datafile.close();
+
+		// READING DONE......
+
+		
+		///DISPLAYING PARAMETER DATA///
 		//Demand
+		cout << "Demand at each node in each time period: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			cout << "[";
+			for (int t = 0; t < T; ++t) {
+				if (t < T - 1) {
+					cout << demand[i][t] << ", ";
+				}
+				else {
+					cout << demand[i][t];
+				}
+
+			}
+			if (i < N - 1) {
+				cout << "]," << endl;
+			}
+			else {
+				cout << "]";
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
+
+
 
 		//Transportation Cost
+		cout << "Transportation cost between nodes: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			cout << "[";
+			for (int t = 0; t < N; ++t) {
+				if (t < N - 1) {
+					cout << tranport_cost[i][t] << ", ";
+				}
+				else {
+					cout << tranport_cost[i][t];
+				}
+
+			}
+			if (i < N - 1) {
+				cout << "]," << endl;
+			}
+			else {
+				cout << "]";
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
+
+
 
 		//Inventory Holding Cost
+		cout << "Inventory Holding Cost: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << holding_cost[i] << ", ";
+			}
+			else {
+				cout << holding_cost[i];
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
+
+
 
 		//Penalty for Unmet Demand
+		cout << "Penalty for Unmet Demand: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << penalty[i] << ", ";
+			}
+			else {
+				cout << penalty[i];
+			}
 
-		//Initial Inventory 
+		}
+		cout << "]" << endl << endl << endl;
+
+
+
+		//Initial Inventory
+		cout << "Initial Inventory: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << init_inventory[i] << ", ";
+			}
+			else {
+				cout << init_inventory[i];
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
+
+
 
 		//Inventory Capacity
+		cout << "Inventory Capacity: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << inventory_cap[i] << ", ";
+			}
+			else {
+				cout << inventory_cap[i];
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
 
 
 
@@ -101,7 +235,7 @@ int main(int argc, char** argv)
 
 
 
-
+		/*
 		IloNumVarArray X_dual(env, 2, 0, IloInfinity, ILOFLOAT);
 		IloNumArray Y_val(env, 3);
 		IloNum theta_val;
@@ -122,10 +256,14 @@ int main(int argc, char** argv)
 
 
 
-
+		*/
 
 		//////////Part 2 - DEVELOP GENERIC MODEL//////////
 
+
+
+
+		/*
 		/////SET MASTER PROBLEM/////
 		IloModel model_master(env);
 		IloExpr Objective_master(env);
@@ -147,7 +285,7 @@ int main(int argc, char** argv)
 
 
 		IloCplex cplex_sub(model_sub);
-		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models; 
+		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models;
 		//default value of EpInt remains 1e-5 http://www.iro.umontreal.ca/~gendron/IFT6551/CPLEX/HTML/relnotescplex/relnotescplex12.html
 		cplex_sub.setOut(env.getNullStream()); // This is to supress the output of Branch & Bound Tree on screen
 		cplex_sub.setWarning(env.getNullStream()); //This is to supress warning messages on screen
@@ -171,10 +309,14 @@ int main(int argc, char** argv)
 
 
 
-
+		*/
 
 		//////////Part 3 - BEGIN ITERATIONS//////////
 
+
+
+
+		/*
 		IloNum GAP = IloInfinity;
 		theta_val = 0;
 		Y_val[0] = 0;
@@ -205,7 +347,7 @@ int main(int argc, char** argv)
 			Objective_sub_er.setExpr(IloMaximize(env, sub_obj_er));
 
 
-			cplex_sub.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible, 
+			cplex_sub.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible,
 			//we don't know if prime is unbounded or infeasible
 			cplex_sub.setParam(IloCplex::RootAlg, IloCplex::Primal);//Solve the SP Dual using Primal Simplex
 			cout << "SOLVING SUB PROBLEM" << endl;
@@ -294,6 +436,8 @@ int main(int argc, char** argv)
 		model_sub.end();
 		cplex_master.end();
 		cplex_sub.end();
+
+		*/
 	}//try
 	catch (IloException& e)
 	{

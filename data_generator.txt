@@ -1,0 +1,249 @@
+#include <iostream>
+#include <vector>
+#include <random>
+using namespace std;
+
+int main() {
+    const int num_nodes = 10;
+    const int num_vehicles = 1;
+    const int num_periods = 3;
+
+    // Random generators
+    random_device rd;  // Creates a random number seed generator.
+    mt19937 gen(rd());  //  Mersenne Twister random number engine. It is fast and produces high-quality pseudorandom numbers.
+
+
+    /////Demand/////
+    uniform_int_distribution<> demand_dis(10, 50);  // Uniform Demand between 10 and 50.
+
+    vector<vector<int>> demand(num_nodes, vector<int>(num_periods));
+    for (int i = 0; i < num_nodes; ++i) {
+        for (int t = 0; t < num_periods; ++t) {
+            if (i == 0) {
+                demand[i][t] = 0; // No demand for plant.
+            }
+            else {
+                demand[i][t] = demand_dis(gen);
+            }
+            
+        }
+    }
+
+
+
+    cout << "Demand values: " << endl;
+    cout << "[";
+    for (int i = 0; i < num_nodes; ++i) {
+        cout << "[";
+        for (int t = 0; t < num_periods; ++t) {
+            if (t < num_periods - 1) {
+                cout << demand[i][t] << ", ";
+            }
+            else {
+                cout << demand[i][t];
+            }
+
+        }
+        if (i < num_nodes - 1) {
+            cout << "]," << endl;
+        }
+        else {
+            cout << "]";
+        }
+
+    }
+    cout << "]" << endl << endl << endl;
+
+
+
+    /*
+    cout << "Sample demand values:\n";
+    for (int i = 0; i < num_nodes; ++i) {
+        for (int t = 0; t < num_periods; ++t) {
+            cout << "demand[" << i << "][" << t << "] = " << demand[i][t] << "\n";
+        }
+    }
+    */
+
+
+
+
+    /////Transportation Cost/////
+    uniform_real_distribution<> cost_dis(5.0, 100.0);    // uniform Cost between 5 and 100.
+
+
+    // Define a 2D vector for transportation cost
+    vector<vector<float>> cost(num_nodes, vector<float>(num_nodes));
+
+    // Fill the cost matrix with random values (no self-loop cost)
+    for (int i = 0; i < num_nodes; ++i) {
+        for (int j = 0; j < num_nodes; ++j) {
+            if (i == j) {
+                cost[i][j] = 0.0; // No cost for same-node travel
+            }
+            else {
+                cost[i][j] = cost_dis(gen);
+            }
+        }
+    }
+
+
+
+    cout << "Transportation cost values: " << endl;
+    cout << "[";
+    for (int i = 0; i < num_nodes; ++i) {
+        cout << "[";
+        for (int t = 0; t < num_nodes; ++t) {
+            if (t < num_nodes - 1) {
+                cout << cost[i][t] << ", ";
+            }
+            else {
+                cout << cost[i][t];
+            }
+
+        }
+        if (i < num_nodes - 1) {
+            cout << "]," << endl;
+        }
+        else {
+            cout << "]";
+        }
+
+    }
+    cout << "]" << endl << endl << endl;
+
+
+
+    /*
+    cout << "Sample transportation cost values:\n";
+    for (int i = 0; i < num_nodes; ++i) {
+        for (int t = 0; t < num_nodes; ++t) {
+            cout << "transportation cost[" << i << "][" << t << "] = " << cost[i][t] << "\n";
+        }
+    }
+    */
+
+
+    /////Inventory Holding Cost/////
+    uniform_real_distribution<> holding_cost_dis(1.0, 10.0);
+
+
+    vector<float> holding_cost(num_nodes);
+    for (int i = 0; i < num_nodes; ++i) {
+        holding_cost[i] = holding_cost_dis(gen);
+    }
+        
+
+
+    cout << "Inventory Holding Cost: " << endl;
+    cout << "[";
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i < num_nodes - 1) {
+            cout << holding_cost[i] <<", ";
+        }
+        else {
+            cout << holding_cost[i];
+        }
+
+    }
+    cout << "]" << endl << endl << endl;
+
+
+
+
+
+    //Penalty for Unmet Demand
+    uniform_real_distribution<> penalty_cost_dis(10.0, 50.0);
+
+    vector<float> penalty_cost(num_nodes);
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i == 0) {
+            penalty_cost[i] = 0;
+        }
+        else {
+            penalty_cost[i] = penalty_cost_dis(gen);
+        }
+    }
+        
+
+    cout << "Penalty for Unmet Demand: " << endl;
+    cout << "[";
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i < num_nodes - 1) {
+            cout << penalty_cost[i] << ", ";
+        }
+        else {
+            cout << penalty_cost[i];
+        }
+
+    }
+    cout << "]" << endl << endl << endl;
+
+
+
+
+    //Initial Inventory 
+    uniform_int_distribution<> inventory_dis(0, 20);
+
+    vector<int> initial_inventory(num_nodes);
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i == 0) {
+            initial_inventory[i] = 0;
+        }
+        else {
+            initial_inventory[i] = inventory_dis(gen);
+        }
+    }
+    
+
+
+    cout << "Initial Inventory: " << endl;
+    cout << "[";
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i < num_nodes - 1) {
+            cout << initial_inventory[i] << ", ";
+        }
+        else {
+            cout << initial_inventory[i];
+        }
+
+    }
+    cout << "]" << endl << endl << endl;
+
+
+
+
+
+
+    //Inventory Capacity
+    uniform_int_distribution<> capacity_dis(30, 100);
+
+
+    vector<int> inventory_capacity(num_nodes);
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i == 0) {
+            inventory_capacity[i] = 300;
+        }
+        else {
+            inventory_capacity[i] = capacity_dis(gen);
+        }
+    }
+        
+
+    cout << "Inventory Capacity: " << endl;
+    cout << "[";
+    for (int i = 0; i < num_nodes; ++i) {
+        if (i < num_nodes - 1) {
+            cout << inventory_capacity[i] << ", ";
+        }
+        else {
+            cout << inventory_capacity[i];
+        }
+
+    }
+    cout << "]" << endl << endl << endl;
+
+
+
+    return 0;
+}
