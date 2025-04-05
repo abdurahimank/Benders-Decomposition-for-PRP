@@ -35,34 +35,65 @@ int main(int argc, char** argv)
 	try
 	{
 		//////////Part 1 - DEFINE VARIABLES AND PARAMETERS//////////
-		
+
 		/////CONSTANTS/////
-		int N = 5;  // Number of customers + Plant (# of Plant = 1).
+		int N = 10;  // Number of customers + Plant (# of Plant = 1).
 		int T = 3;  // Number of time periods.
 		int M = 1;  // Number of vehicles available.
 
 		int C = 100;  // Production capacity of the plant in a time period.
 		int Q = 50;  // Vehicle capacity (all vehicles are identical).
+
 		double u = 10;  // Unit cost of production.
 		double f = 5;  // Setup cost for production.
 
-		
+
+
 		/////PARAMETERS/////
 		TwoDMatrix demand(env);  // Demand at a customer node in a time period.
+
 		TwoDMatrix tranport_cost(env);  // Transportation cost between two nodes.
 		IloNumArray holding_cost(env);  // Inventory holding cost at each node.
-		IloNumArray penalty(env);  // Penalt at node i, if demand is unmet in a period.
+		IloNumArray penalty(env);  // Penalty at node i, if demand is unmet in a period.
 
 		IloNumArray init_Inventory(env);  // Initial inventory at each node.
-		IloNumArray invemtory_cap(env);  // Inventory capacity at each node (node 0 is the plant).
+		IloNumArray inventory_cap(env);  // Inventory capacity at each node (node 0 is the plant).
+
+
+		///GENERATING PARAMETER VALUES///
+		//Demand
+
+		//Transportation Cost
+
+		//Inventory Holding Cost
+
+		//Penalty for Unmet Demand
+
+		//Initial Inventory 
+
+		//Inventory Capacity
 
 
 
 
+		/////INTEGER DECISION VARIABLES/////
+		IloNumVarArray Y(env, T, 0, IloInfinity, ILOBOOL);  // 1 if production takesplace in time period T, OW = 0.
+		IloNumArray	Y_val(env, T);  // To store "Y" values.
+
+		// Z[i][k][t] is equal to 1 iff node i is visited by vehicle k in period t, OW = 0.
 
 
-		/////BASIC DECISION VARIABLES/////
-		IloNumVarArray Y(env, T, 0, IloInfinity, ILOBOOL);  // 1 if production takesplace in time period T, ow = 0.
+		// X[i][j][k][t] represents the number of times vehicle k travels directly between node i and node j in period t.
+		// Xijkt = {0, 1} and X0jkt = {0, 1, 2}.
+
+
+
+		/////DUAL DECISION VARIABLES/////
+
+
+
+		/////CONTINUOUS DECISION VARIABLES/////
+
 
 
 

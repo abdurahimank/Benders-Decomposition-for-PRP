@@ -24,5 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="test_1.txt" />
+    <Text Include="reading_data.txt" />
+    <Text Include="backup_file.txt" />
   </ItemGroup>
 </Project>

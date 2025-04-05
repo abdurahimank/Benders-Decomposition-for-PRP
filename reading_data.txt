@@ -1,0 +1,104 @@
+// This is the code for Single Allocation Hub and Spoke Network Design for the model described in:
+// Skorin-Kapov, D., Skorin-Kapov, J., O’Kelley, M.E. 1996. Tight linear programming relaxations of uncapacitated p-hub 
+//median problems. European Jou8rnal of Operational Research, 94, 582 - 593.
+// Also in Pirkul, H.,  Schilling, D.A. 1998. An efficient procedure for designing single allocation hub 
+// and spoke systems. Management Science, 44(1), 235-242.
+#pragma warning(disable : 4996)//For Visual Studio 2012
+#include<stdio.h>
+#include<conio.h>
+#include<iostream>
+#include<fstream>
+#include<iosfwd>
+#include<string>
+#include <deque>
+#include <sstream>
+#include <time.h>
+#include <stdlib.h>
+
+#include <ilcplex/ilocplex.h>
+#include <ilconcert/ilosys.h>
+
+ILOSTLBEGIN
+
+typedef IloArray<IloNumArray> TwoDMatrix;
+typedef IloArray<TwoDMatrix> ThreeDMatrix;
+typedef IloArray<ThreeDMatrix> FourDMatrix;
+
+int main(int argc, char** argv)
+{
+	IloEnv env;
+	int N;//N=no. of nodes
+	IloNum c_collect = 1, c_distribute = 1, c_tranship = 0.90;//per unit costs of shipping
+
+	TwoDMatrix lambda(env);//flow data between pairs of nodes
+	TwoDMatrix dist(env);//distance data between pairs of nodes
+	IloNumArray test(env);
+	IloNum p = 3;//Number of hubs to open
+
+	IloNum eps;//later assigned as eps = cplex.getParam(IloCplex::EpInt); EpInt is the tolerance gap for integer variables
+
+	try
+	{
+		///////// DATA FILE READING //////////
+
+		//const char* data_filename  = "Data_HS_CAB_5node.dat";
+		//const char* data_filename  = "Data_HS_CAB_10node.dat";
+		const char* data_filename = "Test_Data.dat";
+		if (argc > 1)
+		{
+			data_filename = argv[1];
+		}
+		fstream datafile;
+		datafile.open(data_filename, ios::in);
+
+		if (!datafile)
+		{
+			cerr << "ERROR: could not open file " << data_filename << " for reading" << endl;
+			cerr << "usage:   " << argv[0] << " <datafile>" << endl;
+			throw(-1);
+		}
+
+		datafile >> lambda >> dist >> test;
+
+		N = lambda.getSize();
+		cout << "Number of nodes = " << N << endl; N = lambda.getSize();
+		cout << "Number of nodes = " << N << endl;
+		cout << "Test matrix size = " << test.getSize() << endl;
+		cout << "No. of Hubs to open = " << p << endl;
+		cout << "c_collect = " << c_collect << ", c_distribute = " << c_distribute << ", c_tranship = " << c_tranship << endl;
+
+		IloBool consistentData = (lambda.getSize() == dist.getSize());
+		if (!consistentData)
+		{
+			cerr << "ERROR: data file '" << data_filename << "' contains inconsistent data" << endl;
+			throw(-1);
+		}
+		datafile.close();
+
+		// READING DONE..................................
+		
+		for (int i = 0; i < test.getSize(); i++) {
+			cout << "Test[" << i + 1 << "]: " << test[i] << endl;
+		}
+
+		for (int i = 0; i < N; i++) {
+			cout << "Node[" << i + 1 << "]: [";
+			for (int j = 0; j < 4; j++) {
+				cout << lambda[i][j] << "  ";
+			}
+			cout << "]" << endl;
+		}
+
+		env.end();
+
+	}//end of of try block
+	catch (IloException& ex)
+	{
+		cerr << "Error: " << ex << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error" << endl;
+	}
+	return 0;
+}
