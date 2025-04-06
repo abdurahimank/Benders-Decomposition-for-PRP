@@ -26,7 +26,15 @@
 
 using namespace std;
 
-typedef IloArray<IloNumArray> TwoDMatrix;
+typedef IloArray<IloNumArray> Array2D;  // Defining a normal 2D array.
+typedef IloArray<Array2D> Array3D;  // Defining a normal 3D array.
+typedef IloArray<Array3D> Array4D;  // Defining a normal 4D array.
+
+
+typedef IloArray<IloNumVarArray> VarArray2D;  // Defining a 2D array of decision variables
+typedef IloArray<VarArray2D> VarArray3D;  // Defining a 3D array of decision variables
+typedef IloArray<VarArray3D> VarArray4D;  // Defining a 4D array of decision variables
+
 
 ILOSTLBEGIN
 
@@ -37,10 +45,11 @@ int main(int argc, char** argv)
 	{
 		//////////Part 1 - DEFINE VARIABLES AND PARAMETERS//////////
 
+#pragma region Defining Constants
 		/////CONSTANTS/////
 		int N = 10;  // Number of customers + Plant (# of Plant = 1).
 		int T = 3;  // Number of time periods.
-		int M = 1;  // Number of vehicles available.
+		int K = 1;  // Number of vehicles available.
 
 		int C = 100;  // Production capacity of the plant in a time period.
 		int Q = 50;  // Vehicle capacity (all vehicles are identical).
@@ -48,12 +57,14 @@ int main(int argc, char** argv)
 		double u = 10;  // Unit cost of production.
 		double f = 5;  // Setup cost for production.
 
+#pragma endregion
 
+#pragma region Defining Parameters
 
 		/////PARAMETERS/////
-		TwoDMatrix demand(env);  // Demand at a customer node in a time period.
+		Array2D demand(env);  // Demand at a customer node in a time period.
 
-		TwoDMatrix tranport_cost(env);  // Transportation cost between two nodes.
+		Array2D tranport_cost(env);  // Transportation cost between two nodes.
 		IloNumArray holding_cost(env);  // Inventory holding cost at each node.
 		IloNumArray penalty(env);  // Penalty at node i, if demand is unmet in a period.
 
@@ -93,7 +104,7 @@ int main(int argc, char** argv)
 
 		
 		///DISPLAYING PARAMETER DATA///
-		//Demand
+		//Printing Demand
 		cout << "Demand at each node in each time period: " << endl;
 		cout << "[";
 		for (int i = 0; i < N; ++i) {
@@ -119,7 +130,7 @@ int main(int argc, char** argv)
 
 
 
-		//Transportation Cost
+		//Printing Transportation Cost
 		cout << "Transportation cost between nodes: " << endl;
 		cout << "[";
 		for (int i = 0; i < N; ++i) {
@@ -145,7 +156,7 @@ int main(int argc, char** argv)
 
 
 
-		//Inventory Holding Cost
+		//Printing Inventory Holding Cost
 		cout << "Inventory Holding Cost: " << endl;
 		cout << "[";
 		for (int i = 0; i < N; ++i) {
@@ -161,7 +172,7 @@ int main(int argc, char** argv)
 
 
 
-		//Penalty for Unmet Demand
+		//Printing Penalty for Unmet Demand
 		cout << "Penalty for Unmet Demand: " << endl;
 		cout << "[";
 		for (int i = 0; i < N; ++i) {
@@ -177,7 +188,7 @@ int main(int argc, char** argv)
 
 
 
-		//Initial Inventory
+		//Printing Initial Inventory
 		cout << "Initial Inventory: " << endl;
 		cout << "[";
 		for (int i = 0; i < N; ++i) {
@@ -193,7 +204,7 @@ int main(int argc, char** argv)
 
 
 
-		//Inventory Capacity
+		//Printing Inventory Capacity
 		cout << "Inventory Capacity: " << endl;
 		cout << "[";
 		for (int i = 0; i < N; ++i) {
@@ -207,56 +218,128 @@ int main(int argc, char** argv)
 		}
 		cout << "]" << endl << endl << endl;
 
+#pragma endregion
 
 
+#pragma region Defining Decision Variables for Master Problem
 
-		/////INTEGER DECISION VARIABLES/////
+		/////DECISION VARIABLES for MASTER PROBLEM/////
 		IloNumVarArray Y(env, T, 0, IloInfinity, ILOBOOL);  // 1 if production takesplace in time period T, OW = 0.
 		IloNumArray	Y_val(env, T);  // To store "Y" values.
 
+
 		// Z[i][k][t] is equal to 1 iff node i is visited by vehicle k in period t, OW = 0.
+		VarArray3D Z(env, T);  // Defining 3D array of decision variables corresponding to each time period.
+		Array3D Z_val(env, T);  // To store Z values in a 3D Array.
+
+		for (int i = 0; i < T; i++) {
+			Z[i] = VarArray2D(env, K);  // Decision variables corresponding to each vehicle.
+			Z_val[i] = Array2D(env, K);  // To store Z[i] values.
+
+			for (int j=0; j < K; j++) {
+				Z[i][j] = IloNumVarArray(env, N, 0, 1, ILOBOOL);  // Decision variables corresponding to each locations.
+				Z_val[i][j] = IloNumArray(env, N);
+			}
+		}
 
 
 		// X[i][j][k][t] represents the number of times vehicle k travels directly between node i and node j in period t.
 		// Xijkt = {0, 1} and X0jkt = {0, 1, 2}.
+		VarArray4D X(env, T);  // Defining 4D array of decision variables corresponding to each time period.
+		Array4D X_val(env, T);  // To store X values in a 4D Array.
+
+		for (int i = 0; i < T; i++) {
+			X[i] = VarArray3D(env, K);  // Decision variables corresponding to each vehicle.
+			X_val[i] = Array3D(env, K);  // To store X[i] values.
+
+			for (int j=0; j < K; j++) {
+				X[i][j] = VarArray2D(env, N);  // Decision variables corresponding to each locations.
+				X_val[i][j] = Array2D(env, N);  // To store X[i][j] values.
+
+				for (int k=0; k < N; k++) {
+					// k==0 is plant, which can have value 0, 1, and 2. All other locations can have only values 0 and 1.
+					if (k == 0) {
+						X[i][j][k] = IloNumVarArray(env, N, 0, 2, ILOINT);  // Decision variables corresponding to each locations.
+						X_val[i][j][k] = IloNumArray(env, N);  // To store X[i][j][k] values.
+					}
+					else {
+						X[i][j][k] = IloNumVarArray(env, N, 0, 1, ILOBOOL);  // Decision variables corresponding to each locations.
+						X_val[i][j][k] = IloNumArray(env, N);  // To store X[i][j][k] values.
+					}
+				}
+			}
+		}
+
+
+		IloNumVar eta(env, 0, IloInfinity, ILOFLOAT);  // DSP gives the value of Theta.
+		IloNum eta_val = 0;  // To store "Theta" values.
+#pragma endregion
+
+#pragma region Defining Decision Variables for Dual Sub Problem
+		/////DUAL DECISION VARIABLES for DUAL PROBLEM/////
+		
+		//Alpha[t] - Defined for each 't' in T.
+		IloNumVarArray Alpha(env, T, 0, IloInfinity, ILOFLOAT);
+		IloNumArray Alpha_val(env, T);
+
+		
+		//Beta[t][i] - Defined for each 'i' in Nc and each 't' in T.
+		VarArray2D Beta(env, T); 
+		Array2D Beta_val(env, T);  
+
+		for (int i=0; i < T; i++) {
+			Beta[i] = IloNumVarArray(env, N, 0, IloInfinity, ILOFLOAT);  // For values from 1 to N, ie only customer locations.
+			Beta_val[i] = IloNumArray(env, N);
+		}
+
+		
+		//Gama[t] - Defined for 't' in T.
+		IloNumVarArray Gamma(env, T, 0, IloInfinity, ILOFLOAT);
+		IloNumArray Gamma_val(env, T);
+
+
+		//Theta - Defined for each 'i' in Nc and each 't' in T.
+		VarArray2D Theta(env, T);
+		Array2D Theta_val(env, T);
+
+		for (int i = 0; i < T; i++) {
+			Theta[i] = IloNumVarArray(env, N, 0, IloInfinity, ILOFLOAT);  // For values from 1 to N, ie only customer locations.
+			Theta_val[i] = IloNumArray(env, N);
+		}
+
+		//Delta - Defined for 't' in T.
+		IloNumVarArray Delta(env, T, 0, IloInfinity, ILOFLOAT);
+		IloNumArray Delta_val(env, T);
+
+
+		//Kappa - Defined for each 'k' in K and each 't' in T.
+		VarArray2D Kappa(env, T);
+		Array2D Kappa_val(env, T);
+
+		for (int i = 0; i < T; i++) {
+			Kappa[i] = IloNumVarArray(env, K, 0, IloInfinity, ILOFLOAT);  
+			Kappa_val[i] = IloNumArray(env, K);
+		}
+
+
+		//Zeta - Defined for each 'i' in Nc, for each 'k' in K and each 't' in T.
+		VarArray3D Zeta(env, T);  // Defining 3D array of decision variables corresponding to each time period.
+		Array3D Zeta_val(env, T);  // To store Zeta values in a 3D Array.
+
+		for (int i = 0; i < T; i++) {
+			Zeta[i] = VarArray2D(env, K);  // Decision variables corresponding to each vehicle.
+			Zeta_val[i] = Array2D(env, K);  // To store Z[i] values.
+
+			for (int j = 0; j < K; j++) {
+				Zeta[i][j] = IloNumVarArray(env, N, 0, IloInfinity, ILOFLOAT);  // Decision variables corresponding to each customer locations, hence N = 1 to n.
+				Zeta_val[i][j] = IloNumArray(env, N);
+			}
+		}
+
+#pragma endregion
 
 
 
-		/////DUAL DECISION VARIABLES/////
-
-
-
-		/////CONTINUOUS DECISION VARIABLES/////
-
-
-
-
-
-
-
-
-		/*
-		IloNumVarArray X_dual(env, 2, 0, IloInfinity, ILOFLOAT);
-		IloNumArray Y_val(env, 3);
-		IloNum theta_val;
-
-
-		/////DECISION VARIABLES AND PARAMETERS FOR EXTREM RAY PROBLEM/////
-		IloNumVarArray X_dual_er(env, 2, 0, IloInfinity, ILOFLOAT);
-		//IloNumVarArray Y_val_er(env, 3, 0, 5, ILOINT);
-		//IloNum theta_val;
-
-
-		/////DECISION VARIABLES AND PARAMETERS FOR MASTER PROBLEM/////
-		IloNumVarArray Y(env, 3, 0, 5, ILOINT);
-		IloNumArray X_dual_val(env, 2);
-		IloNumArray X_dual_val_er(env, 2);
-		//IloNumVar theta_var(env, -IloInfinity, IloInfinity, ILOFLOAT);
-		IloNumVar theta_var(env, 0, IloInfinity, ILOFLOAT);
-
-
-
-		*/
 
 		//////////Part 2 - DEVELOP GENERIC MODEL//////////
 

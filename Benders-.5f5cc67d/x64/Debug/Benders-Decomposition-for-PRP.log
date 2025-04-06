@@ -1,13 +1,2 @@
 ﻿  main.cpp
-concert.lib(iloenv.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(iloenv.obj)' or at ''; linking object as if no debug info
-concert.lib(ilostimei.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilostimei.obj)' or at ''; linking object as if no debug info
-concert.lib(ilotypes.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilotypes.obj)' or at ''; linking object as if no debug info
-concert.lib(iloexpression.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(iloexpression.obj)' or at ''; linking object as if no debug info
-concert.lib(iloconstraint.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(iloconstraint.obj)' or at ''; linking object as if no debug info
-concert.lib(ilosolution.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilosolution.obj)' or at ''; linking object as if no debug info
-concert.lib(ilocollection.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilocollection.obj)' or at ''; linking object as if no debug info
-concert.lib(ilocollectioniterator.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilocollectioniterator.obj)' or at ''; linking object as if no debug info
-concert.lib(iloskiplist.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(iloskiplist.obj)' or at ''; linking object as if no debug info
-concert.lib(ilonumfunci.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilonumfunci.obj)' or at ''; linking object as if no debug info
-concert.lib(ilointervalsi.obj) : warning LNK4099: PDB '' was not found with 'concert.lib(ilointervalsi.obj)' or at ''; linking object as if no debug info
   Benders-Decomposition-for-PRP.vcxproj -> C:\Users\laluv\OneDrive - Indian Institute of Management Ahmedabad\Desktop\Git\Repos\Benders-Decomposition-for-PRP\x64\Debug\Benders-Decomposition-for-PRP.exe
