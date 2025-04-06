@@ -28,6 +28,7 @@
 
 using namespace std;
 
+#pragma region Defining High Dimensional Arrays
 typedef IloArray<IloNumArray> Array2D;  // Defining a normal 2D array.
 typedef IloArray<Array2D> Array3D;  // Defining a normal 3D array.
 typedef IloArray<Array3D> Array4D;  // Defining a normal 4D array.
@@ -36,6 +37,7 @@ typedef IloArray<Array3D> Array4D;  // Defining a normal 4D array.
 typedef IloArray<IloNumVarArray> VarArray2D;  // Defining a 2D array of decision variables
 typedef IloArray<VarArray2D> VarArray3D;  // Defining a 3D array of decision variables
 typedef IloArray<VarArray3D> VarArray4D;  // Defining a 4D array of decision variables
+#pragma endregion
 
 
 ILOSTLBEGIN
@@ -444,27 +446,49 @@ int main(int argc, char** argv)
 
 		//////////Part 3 - BEGIN ITERATIONS//////////
 
+#pragma region Initiliazing Values
+		/////INITILIAZING VALUES TO START ITERATION/////
+		
+		//IloNum GAP = IloInfinity;  // Gap between LB and UB initially set to inifinity.
 		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models;
 		//default value of EpInt remains 1e-5 http://www.iro.umontreal.ca/~gendron/IFT6551/CPLEX/HTML/relnotescplex/relnotescplex12.html
 
+		eta_val = 0;  // eta_val set to 0.
 
+		// X[t][k][i][j] values set to 0.
+		for (int t = 0; t < T; t++) {
+			for (int k = 0; k < K; k++) {
+				for (int i = 0; i < N; i++) {
+					for (int j = 0; j < N; j++) {
+						X_val[t][k][i][j] = 0;
+					}
+				}
+			}
+		}
+
+		// Z[t][k][i] values set to 0.
+		for (int t = 0; t < T; t++) {
+			for (int k = 0; k < K; k++) {
+				for (int i = 0; i < N; i++) {
+					Z_val[t][k][i] = 0;
+				}
+			}
+		}
+
+		// Y[t] values set to 0.
+		for (int t = 0; t < T; t++) {
+			Y_val[t] = 0;
+		}
+		
+		IloNum sub_obj_val = 0;
+		IloNum Upper_bound = IloInfinity;
+		IloNum Lower_bound = 0;
+		// GAP = Upper_bound - Lower_bound;
+		IloInt Iter = 0;
+#pragma endregion
 
 
 		/*
-		IloNum GAP = IloInfinity;
-		theta_val = 0;
-		Y_val[0] = 0;
-		Y_val[1] = 0;
-		Y_val[2] = 0;
-		IloNum sub_obj_val = 0;
-		IloNum er_obj_val = 0;
-		IloNum Upper_bound = IloInfinity;
-		IloNum Lower_bound = 0;
-		GAP = Upper_bound - Lower_bound;
-		cout << "Y = " << Y_val << endl;
-		IloInt Iter = 0;
-
-		//while( Iter < MaxCut )
 		while (Upper_bound - Lower_bound > eps)
 		{
 			Iter++;

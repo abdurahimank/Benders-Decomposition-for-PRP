@@ -28,6 +28,7 @@
 
 using namespace std;
 
+#pragma region Defining High Dimensional Arrays
 typedef IloArray<IloNumArray> Array2D;  // Defining a normal 2D array.
 typedef IloArray<Array2D> Array3D;  // Defining a normal 3D array.
 typedef IloArray<Array3D> Array4D;  // Defining a normal 4D array.
@@ -36,6 +37,7 @@ typedef IloArray<Array3D> Array4D;  // Defining a normal 4D array.
 typedef IloArray<IloNumVarArray> VarArray2D;  // Defining a 2D array of decision variables
 typedef IloArray<VarArray2D> VarArray3D;  // Defining a 3D array of decision variables
 typedef IloArray<VarArray3D> VarArray4D;  // Defining a 4D array of decision variables
+#pragma endregion
 
 
 ILOSTLBEGIN
@@ -53,8 +55,8 @@ int main(int argc, char** argv)
 		int T = 3;  // Number of time periods.
 		int K = 1;  // Number of vehicles available.
 
-		int C = 100;  // Production capacity of the plant in a time period.
-		int Q = 50;  // Vehicle capacity (all vehicles are identical).
+		double C = 100;  // Production capacity of the plant in a time period.
+		double Q = 50;  // Vehicle capacity (all vehicles are identical).
 
 		double u = 10;  // Unit cost of production.
 		double f = 500;  // Setup cost for production.
@@ -79,7 +81,8 @@ int main(int argc, char** argv)
 		IloNumArray holding_cost(env);  // Inventory holding cost at each node.
 		IloNumArray penalty(env);  // Penalty at node i, if demand is unmet in a period.
 
-		IloNumArray init_inventory(env);  // Initial inventory at each node.
+		//Array2D init_inventory(env);  // Initial inventory at each node and at each time period.
+		IloNumArray init_inventory(env);  // Initial inventory at each node and at each time period.
 		IloNumArray inventory_cap(env);  // Inventory capacity at each node (node 0 is the plant).
 
 
@@ -112,6 +115,33 @@ int main(int argc, char** argv)
 		datafile.close();
 
 		// READING DONE......
+
+		//Defining set SetM[t]
+		vector<double> SetM(T);  // M in each T time periods.
+
+		for (int t = 0; t < T; t++) {
+			double sum_d = 0.0;
+			for (int j = t; j < T; j++) {
+				for (int i = 1; i < N; i++) {
+					sum_d += demand[j][i];  
+				}
+			}
+			SetM[t] = min(C, sum_d);
+		}
+
+		//Defining set SetN[t][i]
+		vector<vector<double>> SetN(T, vector<double>(N));
+
+		for (int t = 0; t < T; t++) {
+			for (int i = 1; i < N; i++) {
+				double sum_d = 0.0;
+				for (int j = t; j < T; j++) {
+					sum_d += demand[j][i];  
+				}
+				SetN[t][i] = min({inventory_cap[i], Q, sum_d});  
+			}
+		}
+
 
 		
 		///DISPLAYING PARAMETER DATA///
@@ -442,43 +472,116 @@ int main(int argc, char** argv)
 
 
 
-		//////////Part 3 - BEGIN ITERATIONS//////////
+		//////////Part 3 - ITERATIONS//////////
 
+#pragma region Initiliazing Values
+		/////INITILIAZING VALUES TO START ITERATION/////
+		
+		//IloNum GAP = IloInfinity;  // Gap between LB and UB initially set to inifinity.
 		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models;
 		//default value of EpInt remains 1e-5 http://www.iro.umontreal.ca/~gendron/IFT6551/CPLEX/HTML/relnotescplex/relnotescplex12.html
 
+		eta_val = 0;  // eta_val set to 0.
 
+		// X[t][k][i][j] values set to 0.
+		for (int t = 0; t < T; t++) {
+			for (int k = 0; k < K; k++) {
+				for (int i = 0; i < N; i++) {
+					for (int j = 0; j < N; j++) {
+						X_val[t][k][i][j] = 0;
+					}
+				}
+			}
+		}
 
+		// Z[t][k][i] values set to 0.
+		for (int t = 0; t < T; t++) {
+			for (int k = 0; k < K; k++) {
+				for (int i = 0; i < N; i++) {
+					Z_val[t][k][i] = 0;
+				}
+			}
+		}
 
-		/*
-		IloNum GAP = IloInfinity;
-		theta_val = 0;
-		Y_val[0] = 0;
-		Y_val[1] = 0;
-		Y_val[2] = 0;
+		// Y[t] values set to 0.
+		for (int t = 0; t < T; t++) {
+			Y_val[t] = 0;
+		}
+		
 		IloNum sub_obj_val = 0;
-		IloNum er_obj_val = 0;
 		IloNum Upper_bound = IloInfinity;
 		IloNum Lower_bound = 0;
-		GAP = Upper_bound - Lower_bound;
-		cout << "Y = " << Y_val << endl;
+		// GAP = Upper_bound - Lower_bound;
 		IloInt Iter = 0;
+#pragma endregion
 
-		//while( Iter < MaxCut )
+		
+		/////ITERATION STARTING/////
 		while (Upper_bound - Lower_bound > eps)
 		{
 			Iter++;
 			cout << "=========================================" << endl;
 			cout << "============ITERATION " << Iter << "==============" << endl;
-			//Define Object Function for the Dual of the Sub problem
+			
+
+			/////SOLVING SUB PROBLEM/////
+			
+			// Refer Equation 32 in paper.
+			//Define Object Function for the Dual Sub Problem.
 			IloExpr sub_obj(env);
+			// Term 1: -Initial Inventory[0][0] * alpha[1]
+			sub_obj += -init_inventory[0] * Alpha[0];
+
+			// Term 2: sum {i in Nc} (demand[t][i] - Initial Inventory[i][0]) * Beta[t][i]
+			for (int i = 1; i < N; i++) {
+				sub_obj += (demand[1][i] - init_inventory[i]) * Beta[1][i];
+			}
+
+			// Term 3: sum {i in Nc} sum {t = 2..T} (demand[t][i] * beta[t][i])
+			for (int t = 1; t < T; t++) {
+				for (int i = 1; i < N; i++) {  
+					sub_obj += demand[t][i] * Beta[t][i];
+				}
+			}
+
+			// Term 4: sum {t in T} (Inventory Capacity[0] * gamma[t])
+			for (int t = 0; t < T; t++) {
+				sub_obj += - inventory_cap[0] * Gamma[t];
+			}
+
+			// Term 5: sum {t in T} sum {i in Nc) (Inventory Capacity[i] - demand[t][i]) * theta[t][i]
+			for (int t = 0; t < T; t++) {
+				for (int i = 1; i < N; i++) {
+					sub_obj += -(inventory_cap[i] - demand[t][i]) * Theta[t][i];
+				}
+			}
+
+			// Term 6: sum {t in T} (-SetM[t] * Y_val[t] * delta[t])
+			for (int t = 0; t < T; t++) {
+				sub_obj += - SetM[t] * Y_val[t] * Delta[t];
+			}
+
+			// Term 7: sum {t in T} sum {k in K} (-Q * Z[t][k][0] * kappa[t][k])
+			for (int t = 0; t < T; t++) {
+				for (int k = 0; k < K; k++) {
+					sub_obj += -Q * Z[t][k][0] * Kappa[t][k];
+				}
+			}
+
+			// Term 8: sum {t in T} sum {k in K} sum {i in Nc} (SetN[t][i] * Z[t][k][i] * zeta[t][k][i])
+			for (int t = 0; t < T; t++) {
+				for (int k = 0; k < K; k++) {
+					for (int i = 1; i < N; i++) {
+						sub_obj += -SetN[t][i] * Z[t][k][i] * Zeta[t][k][i];
+					}
+				}
+			}
+
+
+
+			/*
 			sub_obj = (2 + 5 * Y_val[0] - 3 * Y_val[1] + 7 * Y_val[2]) * X_dual[0] + (-10 + 4 * Y_val[0] + 2 * Y_val[1] + 4 * Y_val[2]) * X_dual[1];
 			Objective_sub.setExpr(IloMaximize(env, sub_obj));
-
-			//Define Object Function for the Dual of the Extreme ray problem
-			IloExpr sub_obj_er(env);
-			sub_obj_er = (2 + 5 * Y_val[0] - 3 * Y_val[1] + 7 * Y_val[2]) * X_dual_er[0] + (-10 + 4 * Y_val[0] + 2 * Y_val[1] + 4 * Y_val[2]) * X_dual_er[1];
-			Objective_sub_er.setExpr(IloMaximize(env, sub_obj_er));
 
 
 			cplex_sub.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible,
@@ -507,46 +610,8 @@ int main(int argc, char** argv)
 
 			}
 
-			if (cplex_sub.getCplexStatus() == CPX_STAT_UNBOUNDED)
-			{// Dual subproblem is unbounded; Add Optimality Cut to the Master Problem
-				cplex_sub.getValues(X_dual_val, X_dual);  // taking values of X_dual from SP and saves to X_dual_val
-				cout << "X_dual = " << X_dual_val << endl;
-				sub_obj_val = cplex_sub.getObjValue();
-				cout << "sub_obj_val = " << sub_obj_val << endl;
-				Upper_bound = IloMin(Upper_bound, (-5 * Y_val[0] + 2 * Y_val[1] - 9 * Y_val[2] + sub_obj_val));
-				cout << "Upper_bound = " << Upper_bound << endl;
 
-				//Add Cut to the Master Problem
-				cout << "Optimality Cut Added to Master Problem: " << "theta + " << (-5 * X_dual_val[0] - 4 * X_dual_val[1]) << " Y1 + "
-					<< (3 * X_dual_val[0] - 2 * X_dual_val[1]) << " Y2 + " << (-7 * X_dual_val[0] - 4 * X_dual_val[1]) << " Y3 >= " << 2 * X_dual_val[0] - 10 * X_dual_val[1] << endl;
-				model_master.add(theta_var + (-5 * X_dual_val[0] - 4 * X_dual_val[1]) * Y[0] + (3 * X_dual_val[0] - 2 * X_dual_val[1]) * Y[1] + (-7 * X_dual_val[0] - 4 * X_dual_val[1]) * Y[2] >=
-					2 * X_dual_val[0] - 10 * X_dual_val[1]);
-
-
-
-				//////SOLVING EXTREME RAYS PROBLEM////
-				cplex_sub_er.solve();
-				cout << "Extreme Ray Problem Solution Status: " << cplex_sub_er.getCplexStatus() << endl;
-
-				cout << "SOLVING EXTREME RAY PROBLEM" << endl;
-				// Dual subproblem is unbounded; Hence add feasibility Cut to the Master Problem
-				cplex_sub_er.getValues(X_dual_val_er, X_dual_er);  // taking values of X_dual from SP and saves to X_dual_val
-				cout << "X_dual of extreme rays = " << X_dual_val_er << endl;
-				//sub_obj_val = cplex_sub.getObjValue();
-				//cout << "extreme_ray_obj_val = " << sub_obj_val << endl;
-				//Upper_bound = IloMin(Upper_bound, (-5 * Y_val[0] + 2 * Y_val[1] - 9 * Y_val[2] + sub_obj_val));
-				//cout << "Upper_bound = " << Upper_bound << endl;
-
-				//Add Cut to the Master Problem
-				cout << "Feasibility Cut Added to Master Problem: " << "0 + " << (-5 * X_dual_val_er[0] - 4 * X_dual_val_er[1]) << " Y1 + "
-					<< (3 * X_dual_val_er[0] - 2 * X_dual_val_er[1]) << " Y2 + " << (-7 * X_dual_val_er[0] - 4 * X_dual_val_er[1]) << " Y3 >= " << 2 * X_dual_val_er[0] - 10 * X_dual_val_er[1] << endl;
-				model_master.add(0 + (-5 * X_dual_val_er[0] - 4 * X_dual_val_er[1]) * Y[0] + (3 * X_dual_val_er[0] - 2 * X_dual_val_er[1]) * Y[1] + (-7 * X_dual_val_er[0] - 4 * X_dual_val_er[1]) * Y[2] >=
-					2 * X_dual_val_er[0] - 10 * X_dual_val_er[1]);
-			}
-
-
-
-
+			/////SOLVING MASTER PROBLEM/////
 			cout << "SOLVING MASTER PROBLEM" << endl;
 			cout << "Master Problem Solution Status: " << cplex_master.getCplexStatus() << endl;
 			cplex_master.extract(model_master);
@@ -565,13 +630,16 @@ int main(int argc, char** argv)
 			cout << "Y3 = " << Y_val[2] << endl;
 			Lower_bound = theta_val - 5 * Y_val[0] + 2 * Y_val[1] - 9 * Y_val[2];
 			cout << "Lower_bound = " << Lower_bound << endl;
-		}//while(Upper_bound - Lower_bound > eps)
+
+			*/
+
+		}  //while(Upper_bound - Lower_bound > eps)
 		model_master.end();
 		model_sub.end();
 		cplex_master.end();
 		cplex_sub.end();
 
-		*/
+		
 	}//try
 	catch (IloException& e)
 	{
