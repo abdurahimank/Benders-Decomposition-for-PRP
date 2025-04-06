@@ -26,7 +26,15 @@
 
 using namespace std;
 
-typedef IloArray<IloNumArray> TwoDMatrix;
+typedef IloArray<IloNumArray> Array2D;  // Defining a normal 2D array.
+typedef IloArray<Array2D> Array3D;  // Defining a normal 3D array.
+typedef IloArray<Array3D> Array4D;  // Defining a normal 4D array.
+
+
+typedef IloArray<IloNumVarArray> VarArray2D;  // Defining a 2D array of decision variables
+typedef IloArray<VarArray2D> VarArray3D;  // Defining a 3D array of decision variables
+typedef IloArray<VarArray3D> VarArray4D;  // Defining a 4D array of decision variables
+
 
 ILOSTLBEGIN
 
@@ -37,10 +45,11 @@ int main(int argc, char** argv)
 	{
 		//////////Part 1 - DEFINE VARIABLES AND PARAMETERS//////////
 
+#pragma region Defining Constants
 		/////CONSTANTS/////
 		int N = 10;  // Number of customers + Plant (# of Plant = 1).
 		int T = 3;  // Number of time periods.
-		int M = 1;  // Number of vehicles available.
+		int K = 1;  // Number of vehicles available.
 
 		int C = 100;  // Production capacity of the plant in a time period.
 		int Q = 50;  // Vehicle capacity (all vehicles are identical).
@@ -48,96 +57,296 @@ int main(int argc, char** argv)
 		double u = 10;  // Unit cost of production.
 		double f = 5;  // Setup cost for production.
 
+#pragma endregion
 
+
+#pragma region Defining Parameters
 
 		/////PARAMETERS/////
-		TwoDMatrix demand(env);  // Demand at a customer node in a time period.
+		Array2D demand(env);  // Demand at a customer node in a time period.
 
-		TwoDMatrix tranport_cost(env);  // Transportation cost between two nodes.
+		Array2D tranport_cost(env);  // Transportation cost between two nodes.
 		IloNumArray holding_cost(env);  // Inventory holding cost at each node.
 		IloNumArray penalty(env);  // Penalty at node i, if demand is unmet in a period.
 
-		IloNumArray init_Inventory(env);  // Initial inventory at each node.
+		IloNumArray init_inventory(env);  // Initial inventory at each node.
 		IloNumArray inventory_cap(env);  // Inventory capacity at each node (node 0 is the plant).
 
 
-		///GENERATING PARAMETER VALUES///
-		// Random generators
-		random_device rd;  // Creates a random number seed generator.
-		mt19937 gen(rd());  //  Mersenne Twister random number engine. It is fast and produces high-quality pseudorandom numbers.
+		///READING PARAMETER DATA///
+		const char* data_filename = "Data.dat";
+		if (argc > 1)
+		{
+			data_filename = argv[1];
+		}
+		fstream datafile;
+		datafile.open(data_filename, ios::in);
+
+		if (!datafile)
+		{
+			cerr << "ERROR: could not open file " << data_filename << " for reading" << endl;
+			cerr << "usage:   " << argv[0] << " <datafile>" << endl;
+			throw(-1);
+		}
+
+		//Importing data in the form of Matrix in the .dat file into the variables as per order.
+		datafile >> demand >> tranport_cost >> holding_cost >> penalty >> init_inventory >> inventory_cap;
+
 		
+		IloBool consistentData = (demand.getSize() == tranport_cost.getSize());  // Ensuring nodes are same in different matrices.
+		if (!consistentData)
+		{
+			cerr << "ERROR: data file '" << data_filename << "' contains inconsistent data" << endl;
+			throw(-1);
+		}
+		datafile.close();
+
+		// READING DONE......
+
 		
-		//Demand
-		uniform_int_distribution<> demand_dis(10, 50);  // Uniform Demand between 10 and 50.
+		///DISPLAYING PARAMETER DATA///
+		//Printing Demand
+		cout << "Demand at each node in each time period: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			cout << "[";
+			for (int t = 0; t < T; ++t) {
+				if (t < T - 1) {
+					cout << demand[i][t] << ", ";
+				}
+				else {
+					cout << demand[i][t];
+				}
+
+			}
+			if (i < N - 1) {
+				cout << "]," << endl;
+			}
+			else {
+				cout << "]";
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
 
 
 
-		//Transportation Cost
-		uniform_int_distribution<> cost_dis(5, 100);    // uniform Cost between 5 and 100.
+		//Printing Transportation Cost
+		cout << "Transportation cost between nodes: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			cout << "[";
+			for (int t = 0; t < N; ++t) {
+				if (t < N - 1) {
+					cout << tranport_cost[i][t] << ", ";
+				}
+				else {
+					cout << tranport_cost[i][t];
+				}
+
+			}
+			if (i < N - 1) {
+				cout << "]," << endl;
+			}
+			else {
+				cout << "]";
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
 
 
 
-		//Inventory Holding Cost
+		//Printing Inventory Holding Cost
+		cout << "Inventory Holding Cost: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << holding_cost[i] << ", ";
+			}
+			else {
+				cout << holding_cost[i];
+			}
 
-		//Penalty for Unmet Demand
-
-		//Initial Inventory 
-
-		//Inventory Capacity
+		}
+		cout << "]" << endl << endl << endl;
 
 
 
+		//Printing Penalty for Unmet Demand
+		cout << "Penalty for Unmet Demand: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << penalty[i] << ", ";
+			}
+			else {
+				cout << penalty[i];
+			}
 
-		/////INTEGER DECISION VARIABLES/////
+		}
+		cout << "]" << endl << endl << endl;
+
+
+
+		//Printing Initial Inventory
+		cout << "Initial Inventory: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << init_inventory[i] << ", ";
+			}
+			else {
+				cout << init_inventory[i];
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
+
+
+
+		//Printing Inventory Capacity
+		cout << "Inventory Capacity: " << endl;
+		cout << "[";
+		for (int i = 0; i < N; ++i) {
+			if (i < N - 1) {
+				cout << inventory_cap[i] << ", ";
+			}
+			else {
+				cout << inventory_cap[i];
+			}
+
+		}
+		cout << "]" << endl << endl << endl;
+
+#pragma endregion
+
+
+#pragma region Defining Decision Variables for Master Problem
+
+		/////DECISION VARIABLES for MASTER PROBLEM/////
 		IloNumVarArray Y(env, T, 0, IloInfinity, ILOBOOL);  // 1 if production takesplace in time period T, OW = 0.
 		IloNumArray	Y_val(env, T);  // To store "Y" values.
 
+
 		// Z[i][k][t] is equal to 1 iff node i is visited by vehicle k in period t, OW = 0.
+		VarArray3D Z(env, T);  // Defining 3D array of decision variables corresponding to each time period.
+		Array3D Z_val(env, T);  // To store Z values in a 3D Array.
+
+		for (int i = 0; i < T; i++) {
+			Z[i] = VarArray2D(env, K);  // Decision variables corresponding to each vehicle.
+			Z_val[i] = Array2D(env, K);  // To store Z[i] values.
+
+			for (int j=0; j < K; j++) {
+				Z[i][j] = IloNumVarArray(env, N, 0, 1, ILOBOOL);  // Decision variables corresponding to each locations.
+				Z_val[i][j] = IloNumArray(env, N);
+			}
+		}
 
 
 		// X[i][j][k][t] represents the number of times vehicle k travels directly between node i and node j in period t.
 		// Xijkt = {0, 1} and X0jkt = {0, 1, 2}.
+		VarArray4D X(env, T);  // Defining 4D array of decision variables corresponding to each time period.
+		Array4D X_val(env, T);  // To store X values in a 4D Array.
+
+		for (int i = 0; i < T; i++) {
+			X[i] = VarArray3D(env, K);  // Decision variables corresponding to each vehicle.
+			X_val[i] = Array3D(env, K);  // To store X[i] values.
+
+			for (int j=0; j < K; j++) {
+				X[i][j] = VarArray2D(env, N);  // Decision variables corresponding to each locations.
+				X_val[i][j] = Array2D(env, N);  // To store X[i][j] values.
+
+				for (int k=0; k < N; k++) {
+					// k==0 is plant, which can have value 0, 1, and 2. All other locations can have only values 0 and 1.
+					if (k == 0) {
+						X[i][j][k] = IloNumVarArray(env, N, 0, 2, ILOINT);  // Decision variables corresponding to each locations.
+						X_val[i][j][k] = IloNumArray(env, N);  // To store X[i][j][k] values.
+					}
+					else {
+						X[i][j][k] = IloNumVarArray(env, N, 0, 1, ILOBOOL);  // Decision variables corresponding to each locations.
+						X_val[i][j][k] = IloNumArray(env, N);  // To store X[i][j][k] values.
+					}
+				}
+			}
+		}
+
+
+		IloNumVar eta(env, 0, IloInfinity, ILOFLOAT);  // DSP gives the value of Theta.
+		IloNum eta_val = 0;  // To store "Theta" values.
+#pragma endregion
+
+
+#pragma region Defining Decision Variables for Dual Sub Problem
+		/////DUAL DECISION VARIABLES for DUAL PROBLEM/////
+		
+		//Alpha[t] - Defined for each 't' in T.
+		IloNumVarArray Alpha(env, T, 0, IloInfinity, ILOFLOAT);
+		IloNumArray Alpha_val(env, T);
+
+		
+		//Beta[t][i] - Defined for each 'i' in Nc and each 't' in T.
+		VarArray2D Beta(env, T); 
+		Array2D Beta_val(env, T);  
+
+		for (int i=0; i < T; i++) {
+			Beta[i] = IloNumVarArray(env, N, 0, IloInfinity, ILOFLOAT);  // For values from 1 to N, ie only customer locations.
+			Beta_val[i] = IloNumArray(env, N);
+		}
+
+		
+		//Gama[t] - Defined for 't' in T.
+		IloNumVarArray Gamma(env, T, 0, IloInfinity, ILOFLOAT);
+		IloNumArray Gamma_val(env, T);
+
+
+		//Theta - Defined for each 'i' in Nc and each 't' in T.
+		VarArray2D Theta(env, T);
+		Array2D Theta_val(env, T);
+
+		for (int i = 0; i < T; i++) {
+			Theta[i] = IloNumVarArray(env, N, 0, IloInfinity, ILOFLOAT);  // For values from 1 to N, ie only customer locations.
+			Theta_val[i] = IloNumArray(env, N);
+		}
+
+		//Delta - Defined for 't' in T.
+		IloNumVarArray Delta(env, T, 0, IloInfinity, ILOFLOAT);
+		IloNumArray Delta_val(env, T);
+
+
+		//Kappa - Defined for each 'k' in K and each 't' in T.
+		VarArray2D Kappa(env, T);
+		Array2D Kappa_val(env, T);
+
+		for (int i = 0; i < T; i++) {
+			Kappa[i] = IloNumVarArray(env, K, 0, IloInfinity, ILOFLOAT);  
+			Kappa_val[i] = IloNumArray(env, K);
+		}
+
+
+		//Zeta - Defined for each 'i' in Nc, for each 'k' in K and each 't' in T.
+		VarArray3D Zeta(env, T);  // Defining 3D array of decision variables corresponding to each time period.
+		Array3D Zeta_val(env, T);  // To store Zeta values in a 3D Array.
+
+		for (int i = 0; i < T; i++) {
+			Zeta[i] = VarArray2D(env, K);  // Decision variables corresponding to each vehicle.
+			Zeta_val[i] = Array2D(env, K);  // To store Z[i] values.
+
+			for (int j = 0; j < K; j++) {
+				Zeta[i][j] = IloNumVarArray(env, N, 0, IloInfinity, ILOFLOAT);  // Decision variables corresponding to each customer locations, hence N = 1 to n.
+				Zeta_val[i][j] = IloNumArray(env, N);
+			}
+		}
+
+#pragma endregion
 
 
 
-		/////DUAL DECISION VARIABLES/////
-
-
-
-		/////CONTINUOUS DECISION VARIABLES/////
-
-
-
-
-
-
-
-
-		/*
-		IloNumVarArray X_dual(env, 2, 0, IloInfinity, ILOFLOAT);
-		IloNumArray Y_val(env, 3);
-		IloNum theta_val;
-
-
-		/////DECISION VARIABLES AND PARAMETERS FOR EXTREM RAY PROBLEM/////
-		IloNumVarArray X_dual_er(env, 2, 0, IloInfinity, ILOFLOAT);
-		//IloNumVarArray Y_val_er(env, 3, 0, 5, ILOINT);
-		//IloNum theta_val;
-
-
-		/////DECISION VARIABLES AND PARAMETERS FOR MASTER PROBLEM/////
-		IloNumVarArray Y(env, 3, 0, 5, ILOINT);
-		IloNumArray X_dual_val(env, 2);
-		IloNumArray X_dual_val_er(env, 2);
-		//IloNumVar theta_var(env, -IloInfinity, IloInfinity, ILOFLOAT);
-		IloNumVar theta_var(env, 0, IloInfinity, ILOFLOAT);
-
-
-
-		*/
 
 		//////////Part 2 - DEVELOP GENERIC MODEL//////////
 
+		/////SET MASTER PROBLEM/////
+		IloModel model_master(env);
 
 
 
@@ -163,7 +372,7 @@ int main(int argc, char** argv)
 
 
 		IloCplex cplex_sub(model_sub);
-		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models; 
+		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models;
 		//default value of EpInt remains 1e-5 http://www.iro.umontreal.ca/~gendron/IFT6551/CPLEX/HTML/relnotescplex/relnotescplex12.html
 		cplex_sub.setOut(env.getNullStream()); // This is to supress the output of Branch & Bound Tree on screen
 		cplex_sub.setWarning(env.getNullStream()); //This is to supress warning messages on screen
@@ -225,7 +434,7 @@ int main(int argc, char** argv)
 			Objective_sub_er.setExpr(IloMaximize(env, sub_obj_er));
 
 
-			cplex_sub.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible, 
+			cplex_sub.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible,
 			//we don't know if prime is unbounded or infeasible
 			cplex_sub.setParam(IloCplex::RootAlg, IloCplex::Primal);//Solve the SP Dual using Primal Simplex
 			cout << "SOLVING SUB PROBLEM" << endl;

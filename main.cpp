@@ -4,6 +4,8 @@
 // - "n" number of customers.
 // - "t" number of time periods.
 // - "m" number of vehicles.
+//Refer Main Paper - 
+//Refer Supplementary Material - 
 
 
 #pragma warning(disable : 4996) //For Visual Studio 2012
@@ -55,11 +57,20 @@ int main(int argc, char** argv)
 		int Q = 50;  // Vehicle capacity (all vehicles are identical).
 
 		double u = 10;  // Unit cost of production.
-		double f = 5;  // Setup cost for production.
+		double f = 500;  // Setup cost for production.
+
+		vector<pair<int, int>> E;  // Set of edges, such that i < j.
+		for (int i = 0; i < N; i++) {
+			for (int j = i + 1; j < N; j++) {
+				E.emplace_back(i, j);  // store edge (i,j) only when i < j
+			}
+		}
 
 #pragma endregion
 
-#pragma region Defining Parameters
+
+#pragma region Defining Parameters and Reading Values
+
 
 		/////PARAMETERS/////
 		Array2D demand(env);  // Demand at a customer node in a time period.
@@ -275,6 +286,7 @@ int main(int argc, char** argv)
 		IloNum eta_val = 0;  // To store "Theta" values.
 #pragma endregion
 
+
 #pragma region Defining Decision Variables for Dual Sub Problem
 		/////DUAL DECISION VARIABLES for DUAL PROBLEM/////
 		
@@ -340,61 +352,100 @@ int main(int argc, char** argv)
 
 
 
-
 		//////////Part 2 - DEVELOP GENERIC MODEL//////////
 
-
-
-
-		/*
+#pragma region Defining Master Problem
 		/////SET MASTER PROBLEM/////
+		// Objective Function: Minimize: sum {t in 1..T} ((setup cost * Y[t]) + (sum {(i, j) in E}{k in 1..K}transport cost[i][j]*X[i][j][k][t])) + eta
 		IloModel model_master(env);
-		IloExpr Objective_master(env);
-		Objective_master = theta_var - 5 * Y[0] + 2 * Y[1] - 9 * Y[2];
-		model_master.add(IloMinimize(env, Objective_master));
+
+		IloExpr obj_master(env);
+
+		for (int t = 0; t < T; t++) {
+			obj_master += f * Y[t];  // Total setup cost.
+
+			for (int k = 0; k < K; k++) {
+				for (const auto& edge : E) {
+					int i = edge.first;
+					int j = edge.second;
+					obj_master += tranport_cost[i][j] * X[t][k][i][j];  // Total transportation cost.
+				}
+			}
+		}
+		obj_master += eta;  // Adding DSP objective value, ie total flow cost.
+
+		model_master.add(IloMinimize(env, obj_master));
+		obj_master.end();
 		IloCplex cplex_master(env);
-		Objective_master.end();
 		cplex_master.setOut(env.getNullStream()); // This is to supress the output of Branch & Bound Tree on screen
 		cplex_master.setWarning(env.getNullStream()); // This is to supress warning messages on screen
+#pragma endregion
 
+
+#pragma region Defining Dual Sub Problem
 		/////SET SUBPROBLEM (DUAL FORMULATION)/////
 		IloModel model_sub(env);
 		IloObjective Objective_sub = IloMaximize(env);
 		model_sub.add(Objective_sub);
 
-		model_sub.add(-2 * X_dual[0] - 3 * X_dual[1] <= -2);
-		model_sub.add(-3 * X_dual[0] + X_dual[1] <= 3);
-		model_sub.add(-6 * X_dual[0] - 3 * X_dual[1] <= -4);
+
+		// Refer Inequality 43 - Supplementary material
+		//Constraint 1 - for {t in 1..T}: Alpha[t] - Delta[t] <= u;
+		for (int t = 0; t < T; ++t) {
+			model_sub.add(Alpha[t] - Delta[t] <= u);
+		}
+
+
+		// Refer Inequality 44 - Supplementary material
+		//Constraint 2 - for {t in 1..T}: -Alpha[t] + Alpha[t+1] - Gamma[t+1] <= holding cost of plant;
+		// Loop till T-1, because t+1 at the end will be undefined - To check why they have taken like this?
+		for (int t = 0; t < T - 1; t++) {
+			model_sub.add(-Alpha[t] + Alpha[t + 1] - Gamma[t + 1] <= holding_cost[0]);
+		}
+
+
+		// Refer Inequality 45 - Supplementary material
+		//Constraint 3 - for {i in Nc} for {t in T}: -Beta[i][t] + Beta[i][t+1] - Theta[i][t] <= holding cost[i].
+		// Loop till T-1, because t+1 at the end will be undefined - To check why they have taken like this?
+		for (int t = 0; t < T - 1; t++) {
+			for (int i = 1; i < N; i++) {
+				model_sub.add(-Beta[t][i] + Beta[t + 1][i] - Theta[t][1] <= holding_cost[i]);
+			}
+		}
+
+
+		// Refer Inequality 46 - Supplementary material
+		//Constraint 4 - for {i in Nc} for {k in K} for {t in T}: -Alpha[t] + Beta[i][t] - Kappa[k][t] - Zeta[i][k][t] <= 0.
+		for (int t = 0; t < T; t++) {
+			for (int k = 0; k < K; k++) {
+				for (int i = 1; i < N; i++) {
+					model_sub.add(-Alpha[t] + Beta[t][i] - Kappa[t][k] - Zeta[t][k][i] <= 0);
+				}
+			}
+		}
+
+
+
+		// Refer Inequality 47 - Supplementary material
+		//Constraint 5 - for {i in Nc} for {t in T}: Beta[i][t] <= penalty[i].
+		for (int t = 0; t < T; t++) {
+			for (int i = 1; i < N; i++) {
+				model_sub.add(Beta[t][i] <= penalty[i]);
+			}
+		}
 
 
 		IloCplex cplex_sub(model_sub);
-		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models;
-		//default value of EpInt remains 1e-5 http://www.iro.umontreal.ca/~gendron/IFT6551/CPLEX/HTML/relnotescplex/relnotescplex12.html
 		cplex_sub.setOut(env.getNullStream()); // This is to supress the output of Branch & Bound Tree on screen
 		cplex_sub.setWarning(env.getNullStream()); //This is to supress warning messages on screen
+#pragma endregion
 
 
-		/////EXTREME RAY PROBLEM (DUAL FORMULATION)/////
-		IloModel model_sub_er(env);
-		IloObjective Objective_sub_er = IloMaximize(env);
-		model_sub_er.add(Objective_sub_er);
-
-		model_sub_er.add(-2 * X_dual_er[0] - 3 * X_dual_er[1] <= 0);
-		model_sub_er.add(-3 * X_dual_er[0] + X_dual_er[1] <= 0);
-		model_sub_er.add(-6 * X_dual_er[0] - 3 * X_dual_er[1] <= 0);
-		model_sub_er.add(X_dual_er[0] + X_dual_er[1] == 1);
-
-
-		IloCplex cplex_sub_er(model_sub_er);
-		cplex_sub_er.setOut(env.getNullStream()); // This is to supress the output of Branch & Bound Tree on screen
-		cplex_sub_er.setWarning(env.getNullStream()); //This is to supress warning messages on screen
-
-
-
-
-		*/
 
 		//////////Part 3 - BEGIN ITERATIONS//////////
+
+		IloNum eps = cplex_sub.getParam(IloCplex::EpInt);//Integer tolerance for MIP models;
+		//default value of EpInt remains 1e-5 http://www.iro.umontreal.ca/~gendron/IFT6551/CPLEX/HTML/relnotescplex/relnotescplex12.html
 
 
 
