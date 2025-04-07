@@ -1,0 +1,1209 @@
+Demand at each node in each time period:
+[[0, 41, 27, 27, 14],
+[0, 46, 28, 31, 13],
+[0, 19, 47, 48, 47]]
+
+
+Transportation cost between nodes:
+[[0, 92.6676, 87.1988, 29.8331, 59.2115],
+[52.5673, 0, 61.4289, 82.9845, 28.5075],
+[6.01653, 98.7138, 0, 9.98311, 53.7862],
+[84.0387, 35.4274, 18.9917, 0, 29.8702],
+[44.6157, 71.5274, 28.8812, 91.2454, 0]]
+
+
+Inventory Holding Cost:
+[2.92323, 8.29824, 3.31484, 5.75108, 2.34106]
+
+
+Penalty for Unmet Demand:
+[0, 16.5659, 20.1573, 43.6652, 18.8971]
+
+
+Initial Inventory:
+[0, 8, 9, 7, 7]
+
+
+Inventory Capacity:
+[300, 30, 68, 33, 69]
+
+
+=========================================
+============ITERATION 1==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 0
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 8247.16
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Unknown
+
+Y = [0, 1, 1]
+
+X Values = [[[[0, -0, -0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 2, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[1, 0, 0, 1, 0]], [[1, 0, 1, 1, 1]], [[1, 0, 0, 1, 0]]]
+
+Eta = 5177.46
+
+LOWER BOUND = 6449.6
+
+
+
+=========================================
+============ITERATION 2==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 1
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6501.81
+
+UPPER BOUND = 7773.95
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [-0, -0, -0]
+
+X Values = [[[[0, -0, -0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0,0, 1, 1], [0, 0, -0, -0, -0], [0, 0, 0, 1, 1], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, -0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[1, 0, 0, 1, 0]], [[1, 0, 1, 1, 1]], [[1, 0, 0, 1, 0]]]
+
+Eta = 6782.96
+
+LOWER BOUND = 7055.11
+
+
+
+=========================================
+============ITERATION 3==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = -0
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 7669.12
+
+UPPER BOUND = 7773.95
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [1, 0, 1]
+
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 2, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 2, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, 0]], [[1, 0, 0, 1, 0]], [[1, 0, 0, 1, 0]]]
+
+Eta = 6128.01
+
+LOWER BOUND = 7247.34
+
+
+
+=========================================
+============ITERATION 4==============
+SOLVING SUB PROBLEM
+Y[0] = 1
+Y[1] = 0
+Y[2] = 1
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6483.16
+
+UPPER BOUND = 7602.5
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [1, 1, 0]
+
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 1, 1, 0],[0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 2, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, 0]], [[1, 0, 1, 1, 0]], [[1, 0, 0, 1, 0]]]
+
+Eta = 6079.32
+
+LOWER BOUND = 7266
+
+
+
+=========================================
+============ITERATION 5==============
+SOLVING SUB PROBLEM
+Y[0] = 1
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6816.67
+
+UPPER BOUND = 7602.5
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [-0, 1, -0]
+
+X Values = [[[[0, -0, -0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0,-0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[1, 0, 0, 1, 0]], [[1, 0, 0, 1, 0]], [[1, 0, -0, 1, -0]]]
+
+Eta = 6653.39
+
+LOWER BOUND = 7332.39
+
+
+
+=========================================
+============ITERATION 6==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = 1
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  -0  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6917.59
+
+UPPER BOUND = 7596.59
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [-0, 1, -0]
+
+X Values = [[[[0, -0, -0, 0, -0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0,-0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 0, 1, 1], [0, 0, -0, -0,-0], [0, 0, 0, 1, 1], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[-0, 0, 0, 0, 0]], [[1, 0, -0, 1, 0]], [[1, 0, 1, 1, 1]]]
+
+Eta = 6653.39
+
+LOWER BOUND = 7365.87
+
+
+
+=========================================
+============ITERATION 7==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = 1
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ -0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  -0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  1 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6828.8
+
+UPPER BOUND = 7541.28
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [-0, 1, -0]
+
+X Values = [[[[0, -0, -0, 0, -0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0,1, 1, -0], [0, 0, -0, -0, -0], [0, 0, 0, 1, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0,-0], [0, 0, 0, 1, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[-0, 0, 0, 0, 0]], [[1, 0, 1, 1, 0]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6653.39
+
+LOWER BOUND = 7407.42
+
+
+
+=========================================
+============ITERATION 8==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = 1
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ -0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6699.02
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [-0, 1, -0]
+
+X Values = [[[[0, -0, -0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0,-0, 1, 1], [0, 0, -0, -0, -0], [0, 0, 0, 1, 1], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, -0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[1, 0, 0, 1, 0]], [[1, 0, 1, 1, 1]], [[1, 0, -0, 1, 0]]]
+
+Eta = 6653.39
+
+LOWER BOUND = 7425.54
+
+
+
+=========================================
+============ITERATION 9==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = 1
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  -0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6795.49
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: OptimalTol
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 1, 1, 0],[0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 2, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, 0]], [[1, 0, 1, 1, 0]], [[1, 0, 0, 1, 0]]]
+
+Eta = 6816.67
+
+LOWER BOUND = 7503.35
+
+
+
+=========================================
+============ITERATION 10==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6816.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 1, 1, 0],[0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 2, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, 0]], [[1, 0, 1, 1, 0]], [[1, 0, 0, 1, 0]]]
+
+Eta = 6816.91
+
+LOWER BOUND = 7503.59
+
+
+
+=========================================
+============ITERATION 11==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  1  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6856.54
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: OptimalTol
+
+Y = [1, 1, 0]
+
+X Values = [[[[0, -0, -0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0,0, 2, -0], [0, 0, -0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 0, 1, 1], [0, 0, -0, -0, -0], [0, 0, 0, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[1, 0, 0, 1, 0]], [[1, 0, -0, 1, 0]], [[1, 0, 1, 1, 1]]]
+
+Eta = 6259.2
+
+LOWER BOUND = 7531.34
+
+
+
+=========================================
+============ITERATION 12==============
+SOLVING SUB PROBLEM
+Y[0] = 1
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  -0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  1 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6739.77
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, -0], [0, 0, -0, -0, 0], [0, 0, 0, -0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, 0,2, 0], [0, 0, 0, -0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 0]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6845.18
+
+LOWER BOUND = 7531.86
+
+
+
+=========================================
+============ITERATION 13==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6817.2
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [-0, 1, -0]
+
+X Values = [[[[0, -0, 0, 0, 0], [0, 0, -0, -0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, -0, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[-0, 0, -0, 0, -0]], [[1, 0, -0, 1, 0]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6845.18
+
+LOWER BOUND = 7531.86
+
+
+
+=========================================
+============ITERATION 14==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = 1
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ -0  0  -0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  -0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6879.13
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: OptimalTol
+
+Y = [-0, 1, -0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, -0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]], [[[0, -0, 0, 2, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, -0, 0, -0]], [[1, 0, -0, 1, 0]], [[1, 0, -0, 1, -0]]]
+
+Eta = 6917.59
+
+LOWER BOUND = 7536.93
+
+
+
+=========================================
+============ITERATION 15==============
+SOLVING SUB PROBLEM
+Y[0] = -0
+Y[1] = 1
+Y[2] = -0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  -0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  -0  1  0 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  -0  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6950.25
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: OptimalTol
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, -0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, 0, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 1,0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, 0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, 0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 16==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 17==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 18==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 19==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 20==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 21==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 22==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 23==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 24==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+=========================================
+============ITERATION 25==============
+SOLVING SUB PROBLEM
+Y[0] = 0
+Y[1] = 1
+Y[2] = 0
+
+Z[t][k][i] values =
+Time Period 0 :
+Vehicle 0 = [ 0  0  0  0  -0 ]
+
+Time Period 1 :
+Vehicle 0 = [ 1  0  0  1  1 ]
+
+Time Period 2 :
+Vehicle 0 = [ 1  0  1  1  -0 ]
+
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 6772.91
+
+UPPER BOUND = 7453.05
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+Extreme ray obj val = 16
+Errhs const: 16
+Feasibility Cut Added to Master Problem
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+
+Y = [0, 1, 0]
+
+X Values = [[[[0, -0, -0, 0, 0], [0, 0, -0, -0, -0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, -0, -0,1, 1], [0, 0, -0, -0, 0], [0, 0, 0, -0, -0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]], [[[0, -0, 1, 1, 0], [0, 0, -0, -0, -0], [0, 0, 0, 1, -0], [0, 0, 0, 0, -0], [0, 0, 0, 0, 0]]]]
+
+Z Values = [[[0, 0, 0, 0, -0]], [[1, 0, 0, 1, 1]], [[1, 0, 1, 1, -0]]]
+
+Eta = 6795.49
+
+LOWER BOUND = 7541.42
+
+
+
+
+C:\Users\laluv\OneDrive - Indian Institute of Management Ahmedabad\Desktop\Git\Repos\Benders-Decomposition-for-PRP\x64\Debug\Benders-Decomposition-for-PRP.exe (process 7180) exited with code 0 (0x0).
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .

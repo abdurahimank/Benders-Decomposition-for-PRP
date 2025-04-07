@@ -1,11 +1,13 @@
 ////2 Stage - Production Routing Problem (PRP)////
+// This code can be used for :-
 // - A single product.
 // - A single production plant.
 // - "n" number of customers.
 // - "t" number of time periods.
-// - "m" number of vehicles.
-//Refer Main Paper - 
-//Refer Supplementary Material - 
+// - "k" number of vehicles.
+
+//Refer Main Paper 
+//Refer Supplementary Material 
 
 
 #pragma warning(disable : 4996) //For Visual Studio 2012
@@ -924,6 +926,7 @@ int main(int argc, char** argv)
 		}
 
 		IloNum sub_obj_val = 0;
+		IloNum sub_obj_val_er = 0;
 		IloNum Upper_bound = IloInfinity;
 		IloNum Lower_bound = 0;
 		// GAP = Upper_bound - Lower_bound;
@@ -932,9 +935,9 @@ int main(int argc, char** argv)
 
 
 		/////ITERATION STARTING/////
-		//while (Iter < 10)
+		while (Iter < 25)
 		//while (GAP > eps)
-		while (Upper_bound - Lower_bound > eps)
+		//while (Upper_bound - Lower_bound > eps)
 		{
 			Iter++;
 			cout << "=========================================" << endl;
@@ -942,6 +945,27 @@ int main(int argc, char** argv)
 
 #pragma region Solving Dual Sub Problem
 			/////SOLVING SUB PROBLEM/////
+			cout << "SOLVING SUB PROBLEM" << endl;
+			///Printing Y Values
+			for (int t = 0; t < T; t++) {
+				cout << "Y[" << t << "] = " << Y_val[t] << endl;
+			}
+
+
+			///Printing Z[t][k][i] Values
+			cout << endl << "Z[t][k][i] values = " << endl;
+			for (int t = 0; t < T; t++) {
+				cout << "Time Period " << t << " :" << endl;
+				for (int k = 0; k < K; k++) {
+					cout << "Vehicle " << k << " = [";
+					for (int i = 0; i < N; i++) {
+						cout << " " << Z_val[t][k][i] << " ";
+					}
+					cout << "]" << endl;
+				}
+				cout << endl;
+			}
+
 
 			// Refer Equation 32 in paper.
 			//Define Objective Function for the Dual Sub Problem.
@@ -995,8 +1019,7 @@ int main(int argc, char** argv)
 			}
 
 			Objective_sub.setExpr(IloMaximize(env, sub_obj));
-			cout << "SOLVING SUB PROBLEM" << endl;
-
+			
 			cplex_sub.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible,
 			//we don't know if prime is unbounded or infeasible
 			cplex_sub.setParam(IloCplex::RootAlg, IloCplex::Primal);//Solve the SP Dual using Primal Simplex
@@ -1146,6 +1169,28 @@ int main(int argc, char** argv)
 			{
 				cout << endl << endl << "SOLVING EXTREME RAY PROBLEM" << endl;
 
+
+				///Printing Y[t] Values
+				for (int t = 0; t < T; t++) {
+					cout << "Y[" << t << "] = " << Y_val[t] << endl;
+				}
+
+
+				///Printing Z[t][k][i] Values
+				cout << endl << "Z[t][k][i] values = " << endl;
+				for (int t = 0; t < T; t++) {
+					cout << "Time Period " << t << " :" << endl;
+					for (int k = 0; k < K; k++) {
+						cout << "Vehicle " << k << " = [";
+						for (int i = 0; i < N; i++) {
+							cout << " " << Z_val[t][k][i] << " ";
+						}
+						cout << "]" << endl;
+					}
+					cout << endl;
+				}
+
+
 				//Define Objective Function for the Extreme Ray Problem.
 				IloExpr sub_obj_er(env);
 				// Term 1: -Initial Inventory[0][0] * alpha[1]
@@ -1198,9 +1243,9 @@ int main(int argc, char** argv)
 
 				Objective_sub_er.setExpr(IloMaximize(env, sub_obj_er));
 				
-				cplex_sub_er.setParam(cplex_sub.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible,
+				cplex_sub_er.setParam(cplex_sub_er.PreInd, 0);   //Disable presolve, otherwise, if dual is infeasible,
 				//we don't know if prime is unbounded or infeasible
-				cplex_sub_er.setParam(IloCplex::RootAlg, IloCplex::Primal);//Solve the SP Dual using Primal Simplex
+				//cplex_sub_er.setParam(IloCplex::RootAlg, IloCplex::Primal);//Solve the SP Dual using Primal Simplex
 
 
 				cplex_sub_er.solve();
@@ -1210,8 +1255,8 @@ int main(int argc, char** argv)
 				// Dual subproblem is unbounded; Hence add feasibility Cut to the Master Problem
 				//cplex_sub_er.getValues(X_dual_val_er, X_dual_er);  // taking values of X_dual from SP and saves to X_dual_val
 				//cout << "X_dual of extreme rays = " << X_dual_val_er << endl;
-				sub_obj_val = cplex_sub_er.getObjValue();
-				cout << "Extreme ray obj val = " << sub_obj_val << endl;
+				sub_obj_val_er = cplex_sub_er.getObjValue();
+				cout << "Extreme ray obj val = " << sub_obj_val_er << endl;
 
 			}
 #pragma endregion
@@ -1225,6 +1270,7 @@ int main(int argc, char** argv)
 				
 				// Storing values of dual variables to respective arrays
 				cplex_sub_er.getValues(AlphaEr_val, AlphaEr);
+				cout << "Test " << AlphaEr_val << endl;  // Delete after testing...
 				
 				// Since getValues() can be used for only 1D array.
 				for (int t = 0; t < T; t++) {
@@ -1318,19 +1364,11 @@ int main(int argc, char** argv)
 
 				cout << "Errhs const: " << Errhs_const << endl;
 				// Add the cut to master problem
-				//model_master.add(0 + Erlhs >= Errhs_const);
+				model_master.add(0 + Erlhs >= Errhs_const);
 				cout << "Feasibility Cut Added to Master Problem" << endl;
 				// Cleanup
 				Erlhs.end();
 
-
-
-
-
-
-				/*
-				
-					*/
 
 			}
 		
@@ -1352,7 +1390,8 @@ int main(int argc, char** argv)
 			///STORING AND DISPLAYING DECISION VARIABLE VALUES OF MASTER PROBLEM
 			// Y[t] values.
 			cplex_master.getValues(Y_val, Y);
-			cout << "Y = " << Y_val << endl;
+			cout << endl << "Y = " << Y_val << endl;
+
 
 			// X[t][k][i][j] values.
 			for (int t = 0; t < T; t++) {
@@ -1364,11 +1403,23 @@ int main(int argc, char** argv)
 					}
 				}
 			}
-			cout << "X Values = " << X_val << endl;
+			cout << endl << "X Values = " << X_val << endl;
+
+
+			// Z[t][k][i] values.
+				for (int t = 0; t < T; t++) {
+					for (int k = 0; k < K; k++) {
+						for (int i = 0; i < N; i++) {
+							Z_val[t][k][i] = cplex_master.getValue(Z[t][k][i]);  // Total transportation cost.
+						}
+					}
+				}
+			cout << endl << "Z Values = " << Z_val << endl;
+
 
 			// eta value.
 			eta_val = cplex_master.getValue(eta);
-			cout << "Eta = " << eta_val << endl;
+			cout << endl << "Eta = " << eta_val << endl;
 
 
 			///CALCULATING LOWER BOUND
