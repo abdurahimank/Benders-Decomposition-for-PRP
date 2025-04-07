@@ -1,0 +1,264 @@
+Demand at each node in each time period:
+[[0, 41, 27, 27, 14],
+[0, 46, 28, 31, 13],
+[0, 19, 47, 48, 47]]
+
+
+Transportation cost between nodes:
+[[0, 92.6676, 87.1988, 29.8331, 59.2115],
+[52.5673, 0, 61.4289, 82.9845, 28.5075],
+[6.01653, 98.7138, 0, 9.98311, 53.7862],
+[84.0387, 35.4274, 18.9917, 0, 29.8702],
+[44.6157, 71.5274, 28.8812, 91.2454, 0]]
+
+
+Inventory Holding Cost:
+[2.92323, 8.29824, 3.31484, 5.75108, 2.34106]
+
+
+Penalty for Unmet Demand:
+[0, 16.5659, 20.1573, 43.6652, 18.8971]
+
+
+Initial Inventory:
+[0, 8, 9, 7, 7]
+
+
+Inventory Capacity:
+[300, 30, 68, 33, 69]
+
+
+=========================================
+============ITERATION 1==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 8247.16
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Unknown
+Y = [0, 1, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5177.46
+
+LOWER BOUND = 6177.46
+=========================================
+============ITERATION 2==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 3==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 4==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 5==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 6==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 7==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 8==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 9==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+=========================================
+============ITERATION 10==============
+SOLVING SUB PROBLEM
+Sub Problem Solution Status: Unbounded
+sub_obj_val = 9436.74
+
+UPPER BOUND = 8247.16
+
+Optimality Cut Added to Master Problem
+
+
+SOLVING EXTREME RAY PROBLEM
+Extreme Ray Problem Solution Status: Unbounded
+extreme_ray_obj_val = 16
+
+
+SOLVING MASTER PROBLEM
+Master Problem Solution Status: Optimal
+Y = [0, 0, 1]
+X Values = [[[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0],[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]], [[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]]]
+Eta = 5834.05
+
+LOWER BOUND = 6334.05
+
+C:\Users\laluv\OneDrive - Indian Institute of Management Ahmedabad\Desktop\Git\Repos\Benders-Decomposition-for-PRP\x64\Debug\Benders-Decomposition-for-PRP.exe (process 36212) exited with code 0 (0x0).
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .

@@ -694,8 +694,9 @@ int main(int argc, char** argv)
 
 
 		/////ITERATION STARTING/////
-		while (GAP > eps)
-			//while (Upper_bound - Lower_bound > eps)
+		while (Iter < 10)
+		//while (GAP > eps)
+		//while (Upper_bound - Lower_bound > eps)
 		{
 			Iter++;
 			cout << "=========================================" << endl;
@@ -826,7 +827,7 @@ int main(int argc, char** argv)
 				new_UB += sub_obj_val;
 
 				Upper_bound = IloMin(Upper_bound, new_UB);
-				cout << "Upper_bound = " << Upper_bound << endl;
+				cout << "UPPER BOUND = " << Upper_bound << endl << endl;
 
 				
 				///ADDING CUT TO THE MASTER PROBLEM
@@ -905,7 +906,7 @@ int main(int argc, char** argv)
 			/////SOLVING EXTREME RAY PROBLEM/////
 			if (cplex_sub.getCplexStatus() == CPX_STAT_UNBOUNDED)
 			{
-				cout << endl << "SOLVING EXTREME RAY PROBLEM" << endl;
+				cout << endl << endl << "SOLVING EXTREME RAY PROBLEM" << endl;
 
 				//Define Objective Function for the Extreme Ray Problem.
 				IloExpr sub_obj_er(env);
@@ -1039,9 +1040,9 @@ int main(int argc, char** argv)
 
 
 #pragma region Solving Master Problem
-			/*
+			
 			/////SOLVING MASTER PROBLEM/////
-			cout << "SOLVING MASTER PROBLEM" << endl;
+			cout << endl << endl << "SOLVING MASTER PROBLEM" << endl;
 			cout << "Master Problem Solution Status: " << cplex_master.getCplexStatus() << endl;
 			cplex_master.extract(model_master);
 			if (!cplex_master.solve())
@@ -1049,22 +1050,52 @@ int main(int argc, char** argv)
 				cout << "Failed" << endl;
 				throw(-1);
 			}
-			Y_val[0] = cplex_master.getValue(Y[0]);
-			Y_val[1] = cplex_master.getValue(Y[1]);
-			Y_val[2] = cplex_master.getValue(Y[2]);
-			theta_val = cplex_master.getValue(theta_var);
-			cout << "theta_var = " << theta_val << endl;
-			cout << "Y1 = " << Y_val[0] << endl;
-			cout << "Y2 = " << Y_val[1] << endl;
-			cout << "Y3 = " << Y_val[2] << endl;
-			Lower_bound = theta_val - 5 * Y_val[0] + 2 * Y_val[1] - 9 * Y_val[2];
-			cout << "Lower_bound = " << Lower_bound << endl;
 
-			*/
+			///STORING AND DISPLAYING DECISION VARIABLE VALUES OF MASTER PROBLEM
+			// Y[t] values.
+			cplex_master.getValues(Y_val, Y);
+			cout << "Y = " << Y_val << endl;
+
+			// X[t][k][i][j] values.
+			for (int t = 0; t < T; t++) {
+				for (int k = 0; k < K; k++) {
+					for (const auto& edge : E) {
+						int i = edge.first;
+						int j = edge.second;
+						X_val[t][k][i][j] = cplex_master.getValue(X[t][k][i][j]);  // Total transportation cost.
+					}
+				}
+			}
+			cout << "X Values = " << X_val << endl;
+
+			// eta value.
+			eta_val = cplex_master.getValue(eta);
+			cout << "Eta = " << eta_val << endl;
+
+
+			///CALCULATING LOWER BOUND
+			double new_LB = 0.0;
+
+			for (int t = 0; t < T; t++) {
+				new_LB += f * Y_val[t];  // Total setup cost.
+
+				for (int k = 0; k < K; k++) {
+					for (const auto& edge : E) {
+						int i = edge.first;
+						int j = edge.second;
+						
+						new_LB += tranport_cost[i][j] * X_val[t][k][i][j];  // Total transportation cost.
+					}
+				}
+			}
+			new_LB += eta_val;  // Adding DSP objective value, ie total flow cost.
+
+			cout << endl << "LOWER BOUND = " << new_LB << endl;
+
 #pragma endregion
 
 
-			GAP = 0;  // Uncomment this to stop iteration at just one iteration.
+			//GAP = 0;  // Uncomment this to stop iteration at just one iteration.
 		}  //while(Upper_bound - Lower_bound > eps)
 		model_master.end();
 		model_sub.end();
