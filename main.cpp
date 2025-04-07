@@ -573,8 +573,87 @@ int main(int argc, char** argv)
 		}
 
 
-		//Refer constrain 11 in paper - Subtour elimination
+		//Refer constrain 11 in paper - SUBTOUR ELIMINATION
+		for (int t = 0; t < T; t++) {  // For each time period
+			for (int k = 0; k < K; k++) {  // For each vehicle
 
+				// Now for each subset s of Nc, such that |s| >= 2
+				// Idea is we will create each subset with for loop and in that loop itself constrain will be added.
+				///CREATING SUBSETS
+				int totalSubsets = 1 << (N - 1); // 2^(N-1) subsets
+
+				for (int mask = 0; mask < totalSubsets; ++mask) {
+					std::vector<int> subset;
+
+					for (int i = 1; i < N; ++i) { // i from 1 to N-1
+						if (mask & (1 << (i - 1))) {
+							//std::cout << i << std::endl;
+							subset.push_back(i);
+						}
+					}
+
+					// Skip subsets with size < 2
+					if (subset.size() < 2) continue;
+
+					/*
+					// Print the subset
+					std::cout << "{ ";
+					for (int val : subset) {
+						std::cout << val << " ";
+						//std::cout << val[0] << " ";
+					}
+					std::cout << "}\n";
+					*/
+
+					///CREATING E(S)
+					vector<pair<int, int>> E_S;
+					for (int i : subset) {
+						for (int j : subset) {
+							if (i < j) E_S.emplace_back(i, j);
+						}
+					}
+
+					/*
+					//Print set E.
+					cout << "Edges (i, j) where i < j:" << endl;
+					for (const auto& edge : E_S) {
+						cout << "(" << edge.first << ", " << edge.second << ")" << endl;
+					}
+					*/
+
+
+					//cout << endl << endl << endl;
+
+					///ADDING CONSTRAINTS
+					for (int e : subset) {
+
+						IloExpr lhs(env);
+						for (const auto& edge : E_S) {
+							int i = edge.first;
+							int j = edge.second;
+							lhs += X[t][k][i][j];
+						}
+
+						IloExpr rhs(env);
+						for (int i : subset) {
+							rhs += Z[t][k][i];
+						}
+						rhs -= Z[t][k][e];
+
+						// Add constraint
+						model_master.add(lhs <= rhs);
+
+						lhs.end();
+						rhs.end();
+					}
+
+
+				}
+
+
+
+			}
+		}
 
 
 
