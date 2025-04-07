@@ -16,16 +16,16 @@ int main() {
     /////Demand/////
     uniform_int_distribution<> demand_dis(10, 50);  // Uniform Demand between 10 and 50.
 
-    vector<vector<int>> demand(num_nodes, vector<int>(num_periods));
-    for (int i = 0; i < num_nodes; ++i) {
-        for (int t = 0; t < num_periods; ++t) {
+    vector<vector<int>> demand(num_periods, vector<int>(num_nodes));
+    for (int t = 0; t < num_periods; ++t) {
+        for (int i = 0; i < num_nodes; ++i) {
             if (i == 0) {
-                demand[i][t] = 0; // No demand for plant.
+                demand[t][i] = 0; // No demand for plant.
             }
             else {
-                demand[i][t] = demand_dis(gen);
+                demand[t][i] = demand_dis(gen);
             }
-            
+
         }
     }
 
@@ -33,18 +33,18 @@ int main() {
 
     cout << "Demand values: " << endl;
     cout << "[";
-    for (int i = 0; i < num_nodes; ++i) {
+    for (int t = 0; t < num_periods; ++t) {
         cout << "[";
-        for (int t = 0; t < num_periods; ++t) {
-            if (t < num_periods - 1) {
-                cout << demand[i][t] << ", ";
+        for (int i = 0; i < num_nodes; ++i) {
+            if (i < num_nodes - 1) {
+                cout << demand[t][i] << ", ";
             }
             else {
-                cout << demand[i][t];
+                cout << demand[t][i];
             }
 
         }
-        if (i < num_nodes - 1) {
+        if (t < num_periods - 1) {
             cout << "]," << endl;
         }
         else {
@@ -132,14 +132,14 @@ int main() {
     for (int i = 0; i < num_nodes; ++i) {
         holding_cost[i] = holding_cost_dis(gen);
     }
-        
+
 
 
     cout << "Inventory Holding Cost: " << endl;
     cout << "[";
     for (int i = 0; i < num_nodes; ++i) {
         if (i < num_nodes - 1) {
-            cout << holding_cost[i] <<", ";
+            cout << holding_cost[i] << ", ";
         }
         else {
             cout << holding_cost[i];
@@ -164,7 +164,7 @@ int main() {
             penalty_cost[i] = penalty_cost_dis(gen);
         }
     }
-        
+
 
     cout << "Penalty for Unmet Demand: " << endl;
     cout << "[";
@@ -194,7 +194,7 @@ int main() {
             initial_inventory[i] = inventory_dis(gen);
         }
     }
-    
+
 
 
     cout << "Initial Inventory: " << endl;
@@ -228,7 +228,7 @@ int main() {
             inventory_capacity[i] = capacity_dis(gen);
         }
     }
-        
+
 
     cout << "Inventory Capacity: " << endl;
     cout << "[";
