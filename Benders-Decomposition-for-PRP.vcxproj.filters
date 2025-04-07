@@ -28,5 +28,7 @@
     <Text Include="backup_file.txt" />
     <Text Include="data_generator.txt" />
     <Text Include="part_2.txt" />
+    <Text Include="test.txt" />
+    <Text Include="First Workable Code.txt" />
   </ItemGroup>
 </Project>

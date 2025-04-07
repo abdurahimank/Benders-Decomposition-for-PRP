@@ -138,9 +138,11 @@
   <ItemGroup>
     <Text Include="backup_file.txt" />
     <Text Include="data_generator.txt" />
+    <Text Include="First Workable Code.txt" />
     <Text Include="part_2.txt" />
     <Text Include="reading_data.txt" />
     <Text Include="part_1.txt" />
+    <Text Include="test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
